@@ -176,6 +176,18 @@ void gameOver(Render window, TTF_Font *font)
     SDL_Delay(2000);
 }
 
+void winner(Render window, TTF_Font *font)
+{
+    bool running = true;
+    SDL_Event event;
+    Button quit(1506, 979, 378, 86, window.loadTexture("src/res/dev/quit pressed2.png"), window.loadTexture("src/res/dev/tutorial/quit.png"));
+    Button restart(771, 850, 378, 86, window.loadTexture("src/res/dev/restart pressed.png"), window.loadTexture("src/res/dev/restart.png"));
+    SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
+    while (running)
+    {
+    }
+}
+
 void Quit(Render window)
 {
     window.cleanUp();
