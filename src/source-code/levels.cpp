@@ -36,7 +36,9 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     setupTex=start1;
     gateClosed=gateC;
     gateOpen=gateO;
-
+    if(levelNumber==3){
+       scientist = new Entity(3300,-1165,window.loadTexture("src/res/gfx/scientist.png"),true);
+    }
 
     // Initialize srcRect and dstRect after setting sizeX and sizeY
 
@@ -60,6 +62,9 @@ void Level::render()
     {
         window.renderEntity(clues.at(i), clues.at(i).getX(), clues.at(i).getY(), 100, 100, clues.at(i).Alive());
     }
+    if(levelNumber==3){
+        window.renderEntity(*scientist, scientist->getX(), scientist->getY(), 100, 100, scientist->Alive());
+    }
 
     if(!levelComplete){
         window.renderTexture1(gateClosed, gateRectClosed);
@@ -69,11 +74,6 @@ void Level::render()
     }
 }
 
-void Level::moveL(int x, int y)
-{
-    srcRect.x += x;
-    srcRect.y += y;
-}
 
 void Level::createEnemies()
 {
@@ -155,11 +155,21 @@ void Level::moveAll(int x, int y)
     {
         clues.at(i).Move(clues.at(i).getX() + x, clues.at(i).getY() + y);
     }
+    for (int i = 0; i < enemyNumber; ++i)
+     {
+        enemies[i].Move(enemies[i].getX() + x, enemies[i].getY() + y);
+     }
+     if(levelNumber==3){
+        scientist->Move(scientist->getX() + x, scientist->getY() + y);
+     }
 
     gateRectClosed.x +=x;
     gateRectOpen.x +=x;
     gateRectOpen.y+=y;
     gateRectClosed.y+=y;
+
+    srcRect.x -= x;
+    srcRect.y -= y;
 
 }
 
@@ -171,7 +181,12 @@ bool Level::checkCollision(SDL_Rect *playerHitbox)
         {
             return true;
         }
+        
     }
+    if(SDL_HasIntersection(playerHitbox, &gateRectClosed))
+        {
+            return false;
+        }
     return false;
 }
 
@@ -221,6 +236,40 @@ void Level::createWalls()
 
         gateRectOpen  = {-1567,-234,234,460};
         gateRectClosed  = {-1586,-241,35,460};
+    }
+    else if(levelNumber==3){
+        walls.push_back({-306,-1571,50,2431});
+        walls.push_back({-2796, -1568,50,2431});
+        walls.push_back({-2796,860,943,50});
+        walls.push_back({-1134,860,878,50});
+        walls.push_back({-1134,-954,878,50});
+        walls.push_back({-1134,-338,878,50});
+        walls.push_back({-1134,261,878,50});
+        walls.push_back({-2796,261,878,50});
+        walls.push_back({-2796,-338,878,50});
+        walls.push_back({-2796,-954,878,50});
+        walls.push_back({-1134,274,50,361});
+        walls.push_back({-1968,274,50,361});
+        walls.push_back({-1968,-338,50,361});
+        walls.push_back({-1968,-954,50,361});
+        walls.push_back({-1134,-954,50,361});
+        walls.push_back({-1134,-338,50,361});
+        walls.push_back({-2790,-1570,2539,50});
+        walls.push_back({3153,-1570,1558,50});
+        walls.push_back({3103,-1570,50,1418});
+        walls.push_back({3153,-215,1286,50});
+        walls.push_back({3858,-175,50,111});
+        walls.push_back({3858,111,50,111});
+        walls.push_back({3853,202,851,50});
+        walls.push_back({4661,-1520,50,1747});
+        walls.push_back({3209,1534,10,1096});
+        walls.push_back({3212,998,1487,324});
+        walls.push_back({-2309,-1351,1568,186});
+
+        gateRectOpen = {3686,-900,56,197};
+        gateRectClosed = {3668,-1139,56,197};
+
+
     }
 }
 

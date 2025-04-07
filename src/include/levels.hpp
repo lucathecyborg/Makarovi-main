@@ -36,6 +36,7 @@ class Level {
     SDL_Texture *gateClosed;
     SDL_Rect gateRectOpen;
     SDL_Rect gateRectClosed;
+    Entity *scientist;
 
 
 
@@ -48,7 +49,6 @@ public:
     SDL_Texture* getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
     SDL_Rect getDstRect() { return dstRect; }
-    void moveL(int x, int y);
     int getX() { return sizeX; }
     int getY() { return sizeY; }
     void createEnemies();

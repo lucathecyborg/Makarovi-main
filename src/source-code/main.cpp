@@ -57,9 +57,13 @@ int main(int argc, char *args[])
 
     SDL_Texture *gateClosed = window.loadTexture("src/res/dev/gate1.png");
     SDL_Texture *gateOpen = window.loadTexture("src/res/dev/gate1_open.png");
-    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 9422, 5299, 3, 20, window, map3Tex, startup1, gateClosed, gateOpen)};
+
+    SDL_Texture *jailTexO = window.loadTexture("src/res/dev/jailOpen.png");
+    SDL_Texture *jailTexC = window.loadTexture("src/res/dev/jailClosed.png");
+
+    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 9422, 5299, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO)};
     levels[0].loadPlayer(player);
-    int level_counter = 0;
+    int level_counter = 2;
     bool gameRunning = true;
     
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
@@ -168,12 +172,8 @@ int main(int argc, char *args[])
         {
             if (moveUp && levels[level_counter].getSrcRect().y - movementSpeed >= 0)
             {
-                levels[level_counter].moveL(0, -movementSpeed);
                 healthPack.Move(healthPack.getX(), healthPack.getY() + movementSpeed);
-                for (int i = 0; i < levels[level_counter].getEnemyNumber(); ++i)
-                {
-                    levels[level_counter].useEnemy(i).Move(levels[level_counter].useEnemy(i).getX(), levels[level_counter].useEnemy(i).getY() + movementSpeed);
-                }
+                
                 levels[level_counter].moveAll(0, movementSpeed);
 
                 lastMove.Up = true;
@@ -191,12 +191,9 @@ int main(int argc, char *args[])
         {
             if (moveDown && levels[level_counter].getSrcRect().y + movementSpeed <= levels[level_counter].getY() - 1180)
             {
-                levels[level_counter].moveL(0, movementSpeed);
+                
                 healthPack.Move(healthPack.getX(), healthPack.getY() - movementSpeed);
-                for (int i = 0; i < levels[level_counter].getEnemyNumber(); ++i)
-                {
-                    levels[level_counter].useEnemy(i).Move(levels[level_counter].useEnemy(i).getX(), levels[level_counter].useEnemy(i).getY() - movementSpeed);
-                }
+               
                 levels[level_counter].moveAll(0, -movementSpeed);
                 lastMove.Down = true;
                 if (ticks - Current_ticks >= animation_time)
@@ -213,12 +210,9 @@ int main(int argc, char *args[])
         {
             if (moveLeft && levels[level_counter].getSrcRect().x - movementSpeed >= 0)
             {
-                levels[level_counter].moveL(-movementSpeed, 0);
+                
                 healthPack.Move(healthPack.getX() + movementSpeed, healthPack.getY());
-                for (int i = 0; i < levels[level_counter].getEnemyNumber(); ++i)
-                {
-                    levels[level_counter].useEnemy(i).Move(levels[level_counter].useEnemy(i).getX() + movementSpeed, levels[level_counter].useEnemy(i).getY());
-                }
+             
 
                 levels[level_counter].moveAll(movementSpeed, 0);
                 lastMove.Left = true;
@@ -230,12 +224,9 @@ int main(int argc, char *args[])
         {
             if (moveRight && levels[level_counter].getSrcRect().x + movementSpeed <= levels[level_counter].getX() - 2020)
             {
-                levels[level_counter].moveL(movementSpeed, 0);
+                
                 healthPack.Move(healthPack.getX() - movementSpeed, healthPack.getY());
-                for (int i = 0; i < levels[level_counter].getEnemyNumber(); ++i)
-                {
-                    levels[level_counter].useEnemy(i).Move(levels[level_counter].useEnemy(i).getX() - movementSpeed, levels[level_counter].useEnemy(i).getY());
-                }
+                
                 levels[level_counter].moveAll(-movementSpeed, 0);
                 lastMove.Right = true;
             }
