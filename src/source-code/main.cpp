@@ -25,7 +25,6 @@ int main(int argc, char *args[])
 
     Render window("Johnny Englishhh", 1920, 1080);
 
-    
     TTF_Font *font = TTF_OpenFont("src/res/dev/ROGFonts-Regular.otf", 24);
     SDL_Color textColor = {255, 0, 0, 200};
     SDL_Texture *player_Walking_Forward[4];
@@ -65,17 +64,16 @@ int main(int argc, char *args[])
     levels[0].loadPlayer(player);
     int level_counter = 2;
     bool gameRunning = true;
-    
+
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
     std::cout << level_counter << std::endl;
-   
 
     bool playersetup1;
-    
-    int lastPunchTime =0;
+
+    int lastPunchTime = 0;
     int movementSpeed = 2;
     int modifier;
-    int redCooldown=0;
+    int redCooldown = 0;
     SDL_DisplayMode displayMode;
     if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
     {
@@ -113,8 +111,8 @@ int main(int argc, char *args[])
     int textHeight = 120;
     bool checking = true;
     int lastcheck;
-    bool heal=false;
-    int healtime=0;
+    bool heal = false;
+    int healtime = 0;
 
     int animation_stage = 0;
     int ticks;
@@ -124,7 +122,7 @@ int main(int argc, char *args[])
     bool punch = false;
     bool renderEx = false;
     bool damageTime = false;
-    SDL_Rect damageRect = {0, 0, 1920,1080};
+    SDL_Rect damageRect = {0, 0, 1920, 1080};
 
     player_Walking_Forward[1] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f2.png");
     player_Walking_Forward[2] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f3.png");
@@ -158,12 +156,12 @@ int main(int argc, char *args[])
     {
         ticks = SDL_GetTicks();
         bool moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
-        int tempCount=level_counter;
+        int tempCount = level_counter;
         bool input = inputHandling(event, gameRunning, levels[level_counter].getPlayer(), player_Walking_Forward, player_Walking_Backward, punch, window, moveUp, moveDown, moveLeft, moveRight, levels, level_counter);
-        
-        if(tempCount!=level_counter)
-                goto setup;
-    
+
+        if (tempCount != level_counter)
+            goto setup;
+
         tempRect = playerRect;
 
         // MOVEMENT ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -240,9 +238,8 @@ int main(int argc, char *args[])
             levels[level_counter].getPlayer().Damage(-50);
             healthPack.setAlive(false);
             heal = true;
-            healtime=ticks;
+            healtime = ticks;
         }
-
 
         // DAMAGE
         for (int i = 0; i < levels[level_counter].getEnemyNumber(); i++)
@@ -253,10 +250,8 @@ int main(int argc, char *args[])
                 {
                     levels[level_counter].getPlayer().Damage(10);
                     lastDamageTime = ticks;
-                    damageTime=true;
-                    redCooldown=ticks;
-                    
-                    
+                    damageTime = true;
+                    redCooldown = ticks;
                 }
             }
 
@@ -265,11 +260,11 @@ int main(int argc, char *args[])
             {
                 renderEx = true;
                 SDL_Rect exclamationRect = {playerRect.x + (playerRect.w / 2) - 50, playerRect.y - 100, 100, 100};
-                if (punch == true&&ticks-lastPunchTime>500)
-                {   
+                if (punch == true && ticks - lastPunchTime > 500)
+                {
                     levels[level_counter].useEnemy(i).setAlive(false);
                     punch = false;
-                    lastPunchTime=ticks;
+                    lastPunchTime = ticks;
                 }
             }
         }
@@ -296,7 +291,7 @@ int main(int argc, char *args[])
 
             // RENDERING
             window.clear();
-        
+
         levels[level_counter].render();
         levels[level_counter].renderCounter(window);
         window.renderEntity(healthPack, healthPack.getX(), healthPack.getY(), 50, 50, healthPack.Alive());
@@ -311,28 +306,31 @@ int main(int argc, char *args[])
 
         window.renderTexture1(clueDist[levels[level_counter].clueDistance()], {1644, 819, 255, 240});
 
-        if(damageTime==true){
-    
+        if (damageTime == true)
+        {
+
             SDL_SetRenderDrawBlendMode(window.getRenderer(), SDL_BLENDMODE_BLEND);
             SDL_SetRenderDrawColor(window.getRenderer(), 255, 0, 0, 60);
             SDL_RenderFillRect(window.getRenderer(), &damageRect);
             SDL_SetRenderDrawBlendMode(window.getRenderer(), SDL_BLENDMODE_NONE);
-            if(ticks-redCooldown>200){
-                damageTime=false;
+            if (ticks - redCooldown > 200)
+            {
+                damageTime = false;
             }
         }
 
-        if(heal==true){
-    
+        if (heal == true)
+        {
+
             SDL_SetRenderDrawBlendMode(window.getRenderer(), SDL_BLENDMODE_BLEND);
             SDL_SetRenderDrawColor(window.getRenderer(), 0, 255, 0, 60);
             SDL_RenderFillRect(window.getRenderer(), &damageRect);
             SDL_SetRenderDrawBlendMode(window.getRenderer(), SDL_BLENDMODE_NONE);
-            if(ticks-healtime>200){
-                heal=false;
+            if (ticks - healtime > 200)
+            {
+                heal = false;
             }
         }
-
 
         window.display();
         if (levels[level_counter].checkComplete())
@@ -347,7 +345,7 @@ int main(int argc, char *args[])
                 }
                 else
                 {
-                    setup:
+                setup:
                     playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
                     player.setTex(player_Walking_Forward[0]);
                     player.Move(960, 540);

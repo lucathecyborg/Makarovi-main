@@ -11,13 +11,13 @@
 #include <iostream>
 void enemyAI(std::vector<Entity> &enemies, int number, Level levels[], int level_counter, int modifier)
 {
-    float movement=0;
-    if(modifier==1)
-        movement=0.5;
-    else if(modifier==3)
-        movement=0.8;
-    else if(modifier==4)
-        movement=1.2;
+    float movement = 0;
+    if (modifier == 1)
+        movement = 0.5;
+    else if (modifier == 3)
+        movement = 0.8;
+    else if (modifier == 4)
+        movement = 1.2;
     SDL_Rect *tempRect;
     for (int i = 0; i < number; i++)
     {
@@ -105,7 +105,6 @@ bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Text
             {
                 level[level_counter].resetLevel();
             }
-         
         }
 
         if (event.type == SDL_KEYUP)
@@ -161,70 +160,72 @@ bool playerSetup(Entity &player, SDL_Texture *mapTex, Render window, SDL_Rect sr
         }
         else
         {
-            y -= modifyer+1;
+            y -= modifyer + 1;
         }
     }
     return false;
 }
 
-
-
-void gameOver(Render window, TTF_Font *font){
+void gameOver(Render window, TTF_Font *font)
+{
+    SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
     window.clear();
-    Text GameOvertText(window.getRenderer(), {255, 0, 0, 255}, font, "GAME OVER", 500,500, 800, 1200);
+    Text GameOvertText(window.getRenderer(), {255, 0, 0, 255}, font, "GAME OVER", 500, 500, 800, 1200);
     GameOvertText.renderText1(1560, 540);
     window.display();
     SDL_Delay(2000);
-
-
 }
 
-
-
-
-void Quit(Render window){
-   window.cleanUp();
-   exit(0);
-    
-    
+void winner(Render window, TTF_Font *font)
+{
+    bool running = true;
+    SDL_Event event;
+    Button quit(1506, 979, 378, 86, window.loadTexture("src/res/dev/quit pressed2.png"), window.loadTexture("src/res/dev/tutorial/quit.png"));
+    Button restart(771, 850, 378, 86, window.loadTexture("src/res/dev/restart pressed.png"), window.loadTexture("src/res/dev/restart.png"));
+    SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
+    while (running)
+    {
+    }
 }
 
+void Quit(Render window)
+{
+    window.cleanUp();
+    exit(0);
+}
 
-
-void writeText(Render window){
-    bool text=true;
+void writeText(Render window)
+{
+    bool text = true;
     SDL_Event e;
     SDL_StartTextInput();
-    string input="";
-    while (text){
+    string input = "";
+    while (text)
+    {
 
-        while(SDL_PollEvent(&e)){
+        while (SDL_PollEvent(&e))
+        {
             switch (e.type)
             {
             case SDL_QUIT:
-                text=false;
+                text = false;
                 Quit(window);
                 break;
-            
-           
+
             case SDL_KEYDOWN:
-                if(e.key.keysym.sym==SDLK_BACKSPACE && !input.empty()){
-                input.pop_back();
+                if (e.key.keysym.sym == SDLK_BACKSPACE && !input.empty())
+                {
+                    input.pop_back();
                 }
-                else if(e.key.keysym.sym==SDLK_RETURN)
-                    text=false;
+                else if (e.key.keysym.sym == SDLK_RETURN)
+                    text = false;
                 break;
             case SDL_TEXTINPUT:
-                input+=e.text.text;
+                input += e.text.text;
                 break;
             }
-            std::cout<<input<<std::endl;
-
-
+            std::cout << input << std::endl;
         }
-
-
     }
     SDL_StopTextInput();
-
 }
