@@ -15,7 +15,8 @@
 
 class Clue;
 
-class Level {
+class Level
+{
     int levelNumber;
     int sizeX;
     int sizeY;
@@ -37,26 +38,23 @@ class Level {
     SDL_Rect gateRectOpen;
     SDL_Rect gateRectClosed;
     Entity *scientist;
+    SDL_Texture *clueRoomTex;
 
-
-
-    
 public:
-
     static Player player1;
-    Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC,SDL_Texture *gateO);
+    Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO);
     void render();
-    SDL_Texture* getTex() { return mapTex; }
+    SDL_Texture *getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
     SDL_Rect getDstRect() { return dstRect; }
     int getX() { return sizeX; }
     int getY() { return sizeY; }
     void createEnemies();
-    Entity& useEnemy(int i);
-    vector<Entity>& getEnemies();
+    Entity &useEnemy(int i);
+    vector<Entity> &getEnemies();
     int getEnemyNumber();
     void resetLevel();
-    vector<SDL_Rect>& getWalls();
+    vector<SDL_Rect> &getWalls();
     void moveAll(int x, int y);
     bool checkCollision(SDL_Rect *playerHitbox);
     void createWalls();
@@ -65,18 +63,16 @@ public:
     bool checkDeathCollision(SDL_Rect *playerHitbox);
     void createClues();
     bool checkClues(Entity *player1);
-    vector<Clue>& getClues();
-    Render getWindow (){return window;};
+    vector<Clue> &getClues();
+    Render getWindow() { return window; };
     void start();
     int clueDistance();
     SDL_Rect &getgateRect();
     void loadPlayer(Entity &x);
-    Player &getPlayer(){return player1;};
-    void saveToFile(const std::string& filename);
-    void loadFromFile(const std::string& filename, Render &window);
+    Player &getPlayer() { return player1; };
+    void saveToFile(const std::string &filename);
+    void loadFromFile(const std::string &filename, Render &window);
     int numberCheck();
     void renderCounter(Render &window);
-
+    void clueRoom(Render &window);
 };
-
-

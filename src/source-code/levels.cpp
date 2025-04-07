@@ -24,12 +24,14 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     this->enemyType = enemyType;
     this->enemyNumber = enemyNumber;
     this->window = window;
-    setupTex=start1;
-    gateClosed=gateC;
-    gateOpen=gateO;
-    if(levelNumber==3){
-       scientist = new Entity(3300,-1165,window.loadTexture("src/res/gfx/scientist.png"),true);
+    setupTex = start1;
+    gateClosed = gateC;
+    gateOpen = gateO;
+    if (levelNumber == 3)
+    {
+        scientist = new Entity(3300, -1165, window.loadTexture("src/res/gfx/scientist.png"), true);
     }
+    clueRoomTex = window.loadTexture("src/res/dev/clues.png");
 
     // Initialize srcRect and dstRect after setting sizeX and sizeY
 
@@ -51,7 +53,8 @@ void Level::render()
     {
         window.renderEntity(clues.at(i), clues.at(i).getX(), clues.at(i).getY(), 100, 100, clues.at(i).Alive());
     }
-    if(levelNumber==3){
+    if (levelNumber == 3)
+    {
         window.renderEntity(*scientist, scientist->getX(), scientist->getY(), 100, 100, scientist->Alive());
     }
 
@@ -64,7 +67,6 @@ void Level::render()
         window.renderTexture1(gateOpen, gateRectOpen);
     }
 }
-
 
 void Level::createEnemies()
 {
@@ -150,21 +152,21 @@ void Level::moveAll(int x, int y)
         clues.at(i).Move(clues.at(i).getX() + x, clues.at(i).getY() + y);
     }
     for (int i = 0; i < enemyNumber; ++i)
-     {
+    {
         enemies[i].Move(enemies[i].getX() + x, enemies[i].getY() + y);
-     }
-     if(levelNumber==3){
+    }
+    if (levelNumber == 3)
+    {
         scientist->Move(scientist->getX() + x, scientist->getY() + y);
-     }
+    }
 
-    gateRectClosed.x +=x;
-    gateRectOpen.x +=x;
-    gateRectOpen.y+=y;
-    gateRectClosed.y+=y;
+    gateRectClosed.x += x;
+    gateRectOpen.x += x;
+    gateRectOpen.y += y;
+    gateRectClosed.y += y;
 
     srcRect.x -= x;
     srcRect.y -= y;
-
 }
 
 bool Level::checkCollision(SDL_Rect *playerHitbox)
@@ -175,12 +177,11 @@ bool Level::checkCollision(SDL_Rect *playerHitbox)
         {
             return true;
         }
-        
     }
-    if(SDL_HasIntersection(playerHitbox, &gateRectClosed))
-        {
-            return false;
-        }
+    if (SDL_HasIntersection(playerHitbox, &gateRectClosed))
+    {
+        return false;
+    }
     return false;
 }
 
@@ -228,42 +229,41 @@ void Level::createWalls()
         deathBarriers.push_back({-428, -879, 645, 855});
         deathBarriers.push_back({-1544, 521, 1116, 279});
 
-        gateRectOpen  = {-1567,-234,234,460};
-        gateRectClosed  = {-1586,-241,35,460};
+        gateRectOpen = {-1567, -234, 234, 460};
+        gateRectClosed = {-1586, -241, 35, 460};
     }
-    else if(levelNumber==3){
-        walls.push_back({-306,-1571,50,2431});
-        walls.push_back({-2796, -1568,50,2431});
-        walls.push_back({-2796,860,943,50});
-        walls.push_back({-1134,860,878,50});
-        walls.push_back({-1134,-954,878,50});
-        walls.push_back({-1134,-338,878,50});
-        walls.push_back({-1134,261,878,50});
-        walls.push_back({-2796,261,878,50});
-        walls.push_back({-2796,-338,878,50});
-        walls.push_back({-2796,-954,878,50});
-        walls.push_back({-1134,274,50,361});
-        walls.push_back({-1968,274,50,361});
-        walls.push_back({-1968,-338,50,361});
-        walls.push_back({-1968,-954,50,361});
-        walls.push_back({-1134,-954,50,361});
-        walls.push_back({-1134,-338,50,361});
-        walls.push_back({-2790,-1570,2539,50});
-        walls.push_back({3153,-1570,1558,50});
-        walls.push_back({3103,-1570,50,1418});
-        walls.push_back({3153,-215,1286,50});
-        walls.push_back({3858,-175,50,111});
-        walls.push_back({3858,111,50,111});
-        walls.push_back({3853,202,851,50});
-        walls.push_back({4661,-1520,50,1747});
-        walls.push_back({3209,1534,10,1096});
-        walls.push_back({3212,998,1487,324});
-        walls.push_back({-2309,-1351,1568,186});
+    else if (levelNumber == 3)
+    {
+        walls.push_back({-306, -1571, 50, 2431});
+        walls.push_back({-2796, -1568, 50, 2431});
+        walls.push_back({-2796, 860, 943, 50});
+        walls.push_back({-1134, 860, 878, 50});
+        walls.push_back({-1134, -954, 878, 50});
+        walls.push_back({-1134, -338, 878, 50});
+        walls.push_back({-1134, 261, 878, 50});
+        walls.push_back({-2796, 261, 878, 50});
+        walls.push_back({-2796, -338, 878, 50});
+        walls.push_back({-2796, -954, 878, 50});
+        walls.push_back({-1134, 274, 50, 361});
+        walls.push_back({-1968, 274, 50, 361});
+        walls.push_back({-1968, -338, 50, 361});
+        walls.push_back({-1968, -954, 50, 361});
+        walls.push_back({-1134, -954, 50, 361});
+        walls.push_back({-1134, -338, 50, 361});
+        walls.push_back({-2790, -1570, 2539, 50});
+        walls.push_back({3153, -1570, 1558, 50});
+        walls.push_back({3103, -1570, 50, 1418});
+        walls.push_back({3153, -215, 1286, 50});
+        walls.push_back({3858, -175, 50, 111});
+        walls.push_back({3858, 111, 50, 111});
+        walls.push_back({3853, 202, 851, 50});
+        walls.push_back({4661, -1520, 50, 1747});
+        walls.push_back({3209, 1534, 10, 1096});
+        walls.push_back({3212, 998, 1487, 324});
+        walls.push_back({-2309, -1351, 1568, 186});
 
-        gateRectOpen = {3686,-900,56,197};
-        gateRectClosed = {3668,-1139,56,197};
-
-
+        gateRectOpen = {3686, -900, 56, 197};
+        gateRectClosed = {3668, -1139, 56, 197};
     }
 }
 
@@ -326,27 +326,28 @@ void Level::createClues()
 {
     if (levelNumber == 1)
     {
-        clues.push_back(Clue(-250, -133, false, window));
-        clues[0].SetClueType("question", "What colour is the star on the big crate?", "purple", "Look! The gate has opened!");
+
+        clues.push_back(Clue(1793, 1112, false, window));
+        clues[0].SetClueType("clue", "That big rock on the left looks suspicious.");
         clues.push_back(Clue(-376, 888, false, window));
         clues[1].SetClueType("clue", "I should look in between the bushes.");
         clues.push_back(Clue(1490, -70, false, window));
         clues[2].SetClueType("clue", "Maybe that last house has something?");
-        clues.push_back(Clue(1793, 1112, false, window));
-        clues[3].SetClueType("clue", "That big rock on the left looks suspicious.");
+        clues.push_back(Clue(-250, -133, false, window));
+        clues[3].SetClueType("question", "What colour is the star on the big crate?", "purple", "Look! The gate has opened!");
     }
     else if (levelNumber == 2)
     {
+        clues.push_back(Clue(619, 629, false, window));
+        clues[0].SetClueType("clue", "I should definitely check the house on the left.");
         clues.push_back(Clue(-540, 1215, false, window));
-        clues[0].SetClueType("clue", "I should look for snakes like the one on this jar in the bushes.");
+        clues[1].SetClueType("clue", "I should look for snakes like the one on this jar in the bushes.");
         clues.push_back(Clue(3028, 1399, false, window));
-        clues[1].SetClueType("clue", "What a big snake. I should continue my search in the house above me.");
-        clues.push_back(Clue(-866, -190, false, window));
-        clues[2].SetClueType("clue", "How dare they cut down this tree! At least the gate should be open now.");
+        clues[2].SetClueType("clue", "What a big snake. I should continue my search in the house above me.");
         clues.push_back(Clue(1753, -791, false, window));
         clues[3].SetClueType("question", "How many coins are there on the floor?", "8", "Let me check across the river for more clues.");
-        clues.push_back(Clue(619, 629, false, window));
-        clues[4].SetClueType("clue", "I should definitely check the house on the left.");
+        clues.push_back(Clue(-866, -190, false, window));
+        clues[4].SetClueType("clue", "How dare they cut down this tree! At least the gate should be open now.");
     }
 }
 
@@ -604,4 +605,51 @@ void Level::renderCounter(Render &window)
 
     enemyText.renderText(0, 00);
     clueText.renderText(0, 60);
+}
+
+void Level::clueRoom(Render &window)
+{
+    bool running = true;
+    SDL_Event event;
+    Button backButton(1507, 960, 378, 96, window.loadTexture("src/res/dev/tutorial/quit.png"), window.loadTexture("src/res/dev/quit pressed2.png"));
+
+    while (running)
+    {
+        window.clear();
+        window.renderTexture(clueRoomTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
+        int y = 105;
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                running = false;
+            }
+            if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                running = false;
+            }
+            if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
+            {
+                if (SDL_HasIntersection(&mouseRect, backButton.getHitbox()))
+                {
+                    running = false;
+                }
+            }
+        }
+
+        for (int i = 0; i < clues.size(); i++)
+        {
+            if (clues[i].Alive())
+            {
+                Text clueText(window.getRenderer(), {0, 0, 0, 255}, TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 80), clues[i].getAnswer(), 0, y, 80, 1800);
+                y += 80;
+                clueText.renderText(0, y);
+            }
+        }
+        backButton.render(window, mouseRect);
+        window.display();
+    }
 }

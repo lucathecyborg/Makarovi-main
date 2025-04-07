@@ -62,7 +62,7 @@ int main(int argc, char *args[])
 
     Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 9422, 5299, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO)};
     levels[0].loadPlayer(player);
-    int level_counter = 2;
+    int level_counter = 0;
     bool gameRunning = true;
 
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
@@ -171,7 +171,7 @@ int main(int argc, char *args[])
             if (moveUp && levels[level_counter].getSrcRect().y - movementSpeed >= 0)
             {
                 healthPack.Move(healthPack.getX(), healthPack.getY() + movementSpeed);
-                
+
                 levels[level_counter].moveAll(0, movementSpeed);
 
                 lastMove.Up = true;
@@ -189,9 +189,9 @@ int main(int argc, char *args[])
         {
             if (moveDown && levels[level_counter].getSrcRect().y + movementSpeed <= levels[level_counter].getY() - 1180)
             {
-                
+
                 healthPack.Move(healthPack.getX(), healthPack.getY() - movementSpeed);
-               
+
                 levels[level_counter].moveAll(0, -movementSpeed);
                 lastMove.Down = true;
                 if (ticks - Current_ticks >= animation_time)
@@ -208,9 +208,8 @@ int main(int argc, char *args[])
         {
             if (moveLeft && levels[level_counter].getSrcRect().x - movementSpeed >= 0)
             {
-                
+
                 healthPack.Move(healthPack.getX() + movementSpeed, healthPack.getY());
-             
 
                 levels[level_counter].moveAll(movementSpeed, 0);
                 lastMove.Left = true;
@@ -222,9 +221,9 @@ int main(int argc, char *args[])
         {
             if (moveRight && levels[level_counter].getSrcRect().x + movementSpeed <= levels[level_counter].getX() - 2020)
             {
-                
+
                 healthPack.Move(healthPack.getX() - movementSpeed, healthPack.getY());
-                
+
                 levels[level_counter].moveAll(-movementSpeed, 0);
                 lastMove.Right = true;
             }

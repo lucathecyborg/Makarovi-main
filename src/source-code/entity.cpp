@@ -258,6 +258,7 @@ void Clue::displayClueText(Render &window, string text)
 void Clue::SetClueType(string type, string text)
 {
     clueType = type;
+    tempAns = text;
     Text clue1(window1.getRenderer(), textColor, font, text, 0, 0, 200, 900, 900);
     clue = clue1;
 }
@@ -271,6 +272,7 @@ void Clue::SetClueType(string type, string question, string odgovor1, string tex
     clue = clue1;
     Text answer1(window1.getRenderer(), textColor, answerFont, answer, 673, 858, 104, 618);
     answers = answer1;
+    tempAns = text;
 }
 
 void Entity::setPrevX(float x1)
@@ -281,4 +283,9 @@ void Entity::setPrevX(float x1)
 void Entity::setPrevY(float y1)
 {
     prevY = y1;
+}
+
+string Clue::getAnswer()
+{
+    return tempAns;
 }
