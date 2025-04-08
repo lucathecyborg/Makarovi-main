@@ -644,7 +644,7 @@ void Level::clueRoom(Render &window)
         {
             if (clues[i].Alive())
             {
-                Text clueText(window.getRenderer(), {0, 0, 0, 255}, TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 80), clues[i].getAnswer(), 0, y, 80, 1800);
+                Text clueText(window.getRenderer(), {0, 0, 0, 255}, TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 80), std::to_string(i + 1) + ". " + clues[i].getAnswer(), 0, y, 80, 1800);
                 y += 80;
                 clueText.renderText(0, y);
             }

@@ -105,6 +105,10 @@ bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Text
             {
                 level[level_counter].resetLevel();
             }
+            if (event.key.keysym.sym == SDLK_TAB)
+            {
+                level[level_counter].clueRoom(window);
+            }
         }
 
         if (event.type == SDL_KEYUP)

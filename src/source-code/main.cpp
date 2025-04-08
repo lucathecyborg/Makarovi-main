@@ -259,7 +259,7 @@ int main(int argc, char *args[])
             {
                 renderEx = true;
                 SDL_Rect exclamationRect = {playerRect.x + (playerRect.w / 2) - 50, playerRect.y - 100, 100, 100};
-                if (punch == true && ticks - lastPunchTime > 500)
+                if (punch == true && ticks - lastPunchTime > 400)
                 {
                     levels[level_counter].useEnemy(i).setAlive(false);
                     punch = false;
