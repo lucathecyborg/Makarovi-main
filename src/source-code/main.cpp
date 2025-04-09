@@ -60,7 +60,7 @@ int main(int argc, char *args[])
     SDL_Texture *jailTexO = window.loadTexture("src/res/dev/jailOpen.png");
     SDL_Texture *jailTexC = window.loadTexture("src/res/dev/jailClosed.png");
 
-    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 9422, 5299, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO)};
+    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO)};
     levels[0].loadPlayer(player);
     int level_counter = 0;
     bool gameRunning = true;

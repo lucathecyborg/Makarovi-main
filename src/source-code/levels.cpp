@@ -91,8 +91,8 @@ void Level::createEnemies()
             }
             else if (levelNumber == 3)
             {
-                EnemyX = rand() % 7402 - 2791;
-                EnemyY = rand() % 4120 - 1570;
+                EnemyX = rand() % 6200 - 2791;
+                EnemyY = rand() % 3487 - 1570;
             }
 
             enemyTempRect = {EnemyX, EnemyY, 100, 100};
@@ -234,37 +234,7 @@ void Level::createWalls()
     }
     else if (levelNumber == 3)
     {
-        walls.push_back({-306, -1571, 50, 2431});
-        walls.push_back({-2796, -1568, 50, 2431});
-        walls.push_back({-2796, 860, 943, 50});
-        walls.push_back({-1134, 860, 878, 50});
-        walls.push_back({-1134, -954, 878, 50});
-        walls.push_back({-1134, -338, 878, 50});
-        walls.push_back({-1134, 261, 878, 50});
-        walls.push_back({-2796, 261, 878, 50});
-        walls.push_back({-2796, -338, 878, 50});
-        walls.push_back({-2796, -954, 878, 50});
-        walls.push_back({-1134, 274, 50, 361});
-        walls.push_back({-1968, 274, 50, 361});
-        walls.push_back({-1968, -338, 50, 361});
-        walls.push_back({-1968, -954, 50, 361});
-        walls.push_back({-1134, -954, 50, 361});
-        walls.push_back({-1134, -338, 50, 361});
-        walls.push_back({-2790, -1570, 2539, 50});
-        walls.push_back({3153, -1570, 1558, 50});
-        walls.push_back({3103, -1570, 50, 1418});
-        walls.push_back({3153, -215, 1286, 50});
-        walls.push_back({3858, -175, 50, 111});
-        walls.push_back({3858, 111, 50, 111});
-        walls.push_back({3853, 202, 851, 50});
-        walls.push_back({4661, -1520, 50, 1747});
-        walls.push_back({3209, 1534, 10, 1096});
-        walls.push_back({3212, 998, 1487, 324});
-        walls.push_back({-2309, -1351, 1568, 186});
-
-        gateRectOpen = {3686, -900, 56, 197};
-        gateRectClosed = {3668, -1139, 56, 197};
-    }
+        }
 }
 
 bool Level::checkDeathCollision(SDL_Rect *playerHitbox)
