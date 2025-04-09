@@ -638,6 +638,11 @@ void Level::clueRoom(Render &window)
             {
                 running = false;
             }
+
+            if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_TAB)
+            {
+                running = false;
+            }
             if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
             {
                 if (SDL_HasIntersection(&mouseRect, backButton.getHitbox()))
