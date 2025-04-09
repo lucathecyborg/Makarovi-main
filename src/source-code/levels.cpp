@@ -29,7 +29,7 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     gateOpen = gateO;
     if (levelNumber == 3)
     {
-        scientist = new Entity(3300, -1165, window.loadTexture("src/res/gfx/scientist.png"), true);
+        scientist = new Entity(2933, -880, window.loadTexture("src/res/gfx/scientist.png"), true);
     }
     clueRoomTex = window.loadTexture("src/res/dev/clues.png");
 
@@ -91,8 +91,8 @@ void Level::createEnemies()
             }
             else if (levelNumber == 3)
             {
-                EnemyX = rand() % 6200 - 2791;
-                EnemyY = rand() % 3487 - 1570;
+                EnemyX = rand() % (3960 - (-2140) + 1) + (-2140);
+                EnemyY = rand() % (2183 - (-1204) + 1) + (-1204);
             }
 
             enemyTempRect = {EnemyX, EnemyY, 100, 100};
@@ -234,7 +234,44 @@ void Level::createWalls()
     }
     else if (levelNumber == 3)
     {
-        }
+        walls.push_back({-2140, 802, 778, 50});
+        walls.push_back({-778, 802, 730, 50});
+        walls.push_back({-2165, -1204, 50, 2056});
+        walls.push_back({-98, -1204, 50, 2056});
+        walls.push_back({-2115, 307, 693, 50});
+        walls.push_back({-2115, -706, 693, 50});
+        walls.push_back({-777, -706, 693, 50});
+        walls.push_back({-777, -188, 693, 50});
+        walls.push_back({-2115, -188, 693, 50});
+        walls.push_back({-1472, 357, 50, 260});
+        walls.push_back({-1471, -656, 50, 260});
+        walls.push_back({-778, -138, 50, 260});
+        walls.push_back({-1472, -138, 50, 260});
+        walls.push_back({-777, 357, 50, 260});
+        walls.push_back({-2115, -1218, 2017, 50});
+        walls.push_back({-1769, -1033, 1315, 165});
+        walls.push_back({2738, -87, 1110, 50});
+        walls.push_back({1327, -1221, 1327, 50});
+        walls.push_back({2738, -1171, 50, 1084});
+        walls.push_back({4026, -1170, 50, 1418});
+        walls.push_back({3366, 249, 660, 50});
+        walls.push_back({3358, 191, 50, 71});
+        walls.push_back({3358, -37, 50, 71});
+        walls.push_back({3213, -689, 36, 602});
+        walls.push_back({3213, -1178, 36, 327});
+        walls.push_back({2788, -651, 425, 43});
+        walls.push_back({2786, -932, 425, 43});
+        walls.push_back({2829, 918, 1231, 283});
+        walls.push_back({2825, 1370, 5, 898});
+        walls.push_back({-777, 307, 693, 50});
+        walls.push_back({-777, -656, 50, 260});
+        walls.push_back({2786, -608, 427, 521});
+        walls.push_back({2786, -1171, 427, 239});
+        walls.push_back({2733, -1221, 1327, 50});
+
+        gateRectOpen = {3209, -660, 50, 164};
+        gateRectClosed = {3205, -851, 50, 164};
+    }
 }
 
 bool Level::checkDeathCollision(SDL_Rect *playerHitbox)
