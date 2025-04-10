@@ -180,7 +180,7 @@ bool Level::checkCollision(SDL_Rect *playerHitbox)
     }
     if (SDL_HasIntersection(playerHitbox, &gateRectClosed))
     {
-        return false;
+        return true;
     }
     return false;
 }
