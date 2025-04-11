@@ -252,6 +252,14 @@ void options(Render &window)
                     brightness = 0;
                     SDL_SetWindowBrightness(window.getWindow(), 1);
                 }
+                if (event.key.keysym.sym == SDLK_LEFT)
+                {
+                    Mix_VolumeMusic(Mix_VolumeMusic(-1) - 10);
+                }
+                if (event.key.keysym.sym == SDLK_RIGHT)
+                {
+                    Mix_VolumeMusic(Mix_VolumeMusic(-1) + 10);
+                }
             }
         }
 

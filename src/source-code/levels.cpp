@@ -693,3 +693,27 @@ void Level::resume()
 {
     Mix_ResumeMusic();
 }
+
+/* Level::~Level()
+{
+    // No need to explicitly call destructors for objects in vectors
+    // std::vector will automatically clean up its elements
+
+    if (scientist != nullptr)
+    {
+        delete scientist; // Properly delete dynamically allocated scientist
+        scientist = nullptr;
+    }
+
+    // Free SDL textures
+    SDL_DestroyTexture(mapTex);
+    SDL_DestroyTexture(setupTex);
+    SDL_DestroyTexture(gateClosed);
+    SDL_DestroyTexture(gateOpen);
+    SDL_DestroyTexture(clueRoomTex);
+
+    // Free music
+    Mix_FreeMusic(level_music);
+} */
+
+// ill do this at some point trust me

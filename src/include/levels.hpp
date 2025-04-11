@@ -45,6 +45,7 @@ class Level
 public:
     static Player player1;
     Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1);
+    ~Level();
     void render();
     SDL_Texture *getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
