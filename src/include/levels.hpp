@@ -70,8 +70,8 @@ public:
     SDL_Rect &getgateRect();
     void loadPlayer(Entity &x);
     Player &getPlayer() { return player1; };
-    void saveToFile(const std::string &filename);
-    void loadFromFile(const std::string &filename, Render &window);
+    void saveToFile();
+    void loadFromFile(Render &window);
     int numberCheck();
     void renderCounter(Render &window);
     void clueRoom(Render &window);

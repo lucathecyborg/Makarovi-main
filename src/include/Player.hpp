@@ -5,18 +5,19 @@
 #include "Render.hpp"
 #include "Entity.hpp"
 
+class Player
+{
+private:
+    float health = 100;
+    Entity *player;
 
-class Player{
-    private:
-        float health=100;
-        Entity *player;
-    public:
-        Player(Entity *player1);
-        void Punch();
-        void setTex(SDL_Texture* p_tex);
-        void Damage(int damage);
-        bool Alive();
-        float &getHealth();
-        Player();
-        void setHealth(int helt);
+public:
+    Player(Entity *player1);
+    void setTex(SDL_Texture *p_tex);
+    void Damage(int damage);
+    bool Alive();
+    float &getHealth();
+    Player();
+    void setHealth(int helt);
+    void setAlive(bool alive);
 };

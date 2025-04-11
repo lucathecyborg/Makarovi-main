@@ -170,14 +170,26 @@ bool playerSetup(Entity &player, SDL_Texture *mapTex, Render window, SDL_Rect sr
     return false;
 }
 
-void gameOver(Render window, TTF_Font *font)
+void gameOver(Render window, TTF_Font *font, bool win)
 {
-    SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
-    window.clear();
-    Text GameOvertText(window.getRenderer(), {255, 0, 0, 255}, font, "GAME OVER", 500, 500, 800, 1200);
-    GameOvertText.renderText1(1560, 540);
-    window.display();
-    SDL_Delay(2000);
+    if (win)
+    {
+        SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
+        window.clear();
+        Text GameOvertText(window.getRenderer(), {0, 255, 0, 255}, font, "YOU WIN", 500, 500, 800, 1200);
+        GameOvertText.renderText1(1560, 540);
+        window.display();
+        SDL_Delay(2000);
+    }
+    else
+    {
+        SDL_SetRenderDrawColor(window.getRenderer(), 0, 0, 0, 255);
+        window.clear();
+        Text GameOvertText(window.getRenderer(), {255, 0, 0, 255}, font, "GAME OVER", 500, 500, 800, 1200);
+        GameOvertText.renderText1(1560, 540);
+        window.display();
+        SDL_Delay(2000);
+    }
 }
 
 void winner(Render window, TTF_Font *font)

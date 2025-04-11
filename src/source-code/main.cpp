@@ -67,7 +67,7 @@ int main(int argc, char *args[])
 
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
     std::cout << level_counter << std::endl;
-
+    bool win = false;
     bool playersetup1;
 
     int lastPunchTime = 0;
@@ -280,15 +280,30 @@ int main(int argc, char *args[])
                 checking = true;
         }
 
-        if (levels[level_counter].getPlayer().Alive() == false)
+        if (levels[level_counter].getPlayer().Alive() == false || !levels[level_counter].checkDeathCollision(player.getHitbox()))
         {
-            gameOver(window, font);
-            selectScreen(window);
-        }
-        if (!levels[level_counter].checkDeathCollision(player.getHitbox()))
-        {
-            gameOver(window, font);
-            selectScreen(window);
+            gameOver(window, font, win);
+            int selection = selectScreen(window, win);
+            switch (selection)
+            {
+            case 1:
+                for (int i = 0; i < 3; i++)
+                {
+                    levels[i].resetLevel();
+                }
+                level_counter = 0;
+                goto setup;
+                break;
+            case 2:
+                levels[level_counter].resetLevel();
+                goto setup;
+                break;
+            case 3:
+                levels[level_counter].resetLevel();
+                levels[level_counter].saveToFile();
+                gameRunning = false;
+                break;
+            }
         }
 
         // RENDERING
@@ -339,18 +354,26 @@ int main(int argc, char *args[])
         {
             if (SDL_HasIntersection(&levels[level_counter].getgateRect(), &playerRect))
             {
-
-                level_counter++;
-                if (level_counter == 3)
+                if (level_counter == 2)
                 {
-                    gameRunning = false;
+                    win = true;
+                    gameOver(window, font, win);
+                    selectScreen(window, win);
                 }
                 else
                 {
-                setup:
-                    playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
-                    player.setTex(player_Walking_Forward[0]);
-                    player.Move(960, 540);
+                    level_counter++;
+                    if (level_counter == 3)
+                    {
+                        gameRunning = false;
+                    }
+                    else
+                    {
+                    setup:
+                        playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
+                        player.setTex(player_Walking_Forward[0]);
+                        player.Move(960, 540);
+                    }
                 }
             }
         }

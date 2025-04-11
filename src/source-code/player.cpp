@@ -56,3 +56,8 @@ void Player::setHealth(int helt)
 {
     health = helt;
 }
+
+void Player::setAlive(bool alive)
+{
+    player->setAlive(alive);
+}

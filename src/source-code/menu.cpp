@@ -14,9 +14,7 @@
 #include "menu.hpp"
 
 int menu(Render &window, Level levels[], int &levelNumber)
-{ // Pass levelNumber by reference
-    // writeText(window);
-    string names[3] = {"level1", "level2", "level3"};
+{
     bool menu = true;
     SDL_Event event;
     SDL_Texture *menuTex = window.loadTexture("src/res/dev/main menu.png");
@@ -93,7 +91,7 @@ int menu(Render &window, Level levels[], int &levelNumber)
                     }
                     else if (SDL_HasIntersection(&mouseRect, saveButon.getHitbox()))
                     {
-                        levels[levelNumber].saveToFile(names[levelNumber]);
+                        levels[levelNumber].saveToFile();
                         TTF_Font *Savefont = TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 140);
                         Text saveText(window.getRenderer(), {255, 0, 0, 255}, Savefont, "Game Saved", 500, 500, 400, 1000, {0, 0, 0, 255});
                         saveText.renderText(450, 300);
@@ -108,7 +106,7 @@ int menu(Render &window, Level levels[], int &levelNumber)
                     else if (SDL_HasIntersection(&mouseRect, loadButon.getHitbox()))
                     {
                         levelNumber = levels[levelNumber].numberCheck() - 1;
-                        levels[levelNumber].loadFromFile(names[levelNumber], window);
+                        levels[levelNumber].loadFromFile(window);
                         TTF_Font *Loadfont = TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 140);
                         Text saveText(window.getRenderer(), {255, 0, 0, 255}, Loadfont, "Game loaded", 500, 500, 400, 1000, {0, 0, 0, 255});
                         saveText.renderText(450, 300);
@@ -326,13 +324,19 @@ void tutorial(Render &window)
     }
 }
 
-int selectScreen(Render &window)
+int selectScreen(Render &window, bool win)
 {
     Button replayFromStart(150, 546, 410, 200, window.loadTexture("src/res/dev/replayStart.png"), window.loadTexture("src/res/dev/replayStart pressed.png"));
     Button replayLevel(1360, 540, 410, 200, window.loadTexture("src/res/dev/replayLevel.png"), window.loadTexture("src/res/dev/replayLevel pressed.png"));
     Button quitAndSave(494, 825, 410, 200, window.loadTexture("src/res/dev/save and quit.png"), window.loadTexture("src/res/dev/save and quit pressed.png"));
     Button quit(1010, 825, 410, 200, window.loadTexture("src/res/dev/quit without saving.png"), window.loadTexture("src/res/dev/quit without saving pressed.png"));
     SDL_Texture *backroundWin = window.loadTexture("src/res/dev/endBackroundWin.png");
+    SDL_Texture *image;
+    if (win)
+        image = window.loadTexture("src/res/dev/win.png");
+    else
+        image = window.loadTexture("src/res/dev/lose.png");
+
     bool running = true;
     SDL_Event event;
     while (running)
@@ -365,6 +369,7 @@ int selectScreen(Render &window)
 
         window.clear();
         window.renderTexture1(backroundWin, {0, 0, 1920, 1080});
+        window.renderTexture1(image, {746, 72, 427, 452});
         quit.render(window, mouseRect);
         quitAndSave.render(window, mouseRect);
         replayLevel.render(window, mouseRect);

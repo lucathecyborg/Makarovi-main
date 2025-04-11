@@ -140,6 +140,7 @@ void Level::resetLevel()
     clues.clear();
     createClues();
     player1.setHealth(100);
+    player1.setAlive(true);
     levelComplete = false;
 }
 
@@ -277,7 +278,7 @@ void Level::createWalls()
         walls.push_back({2786, -1171, 427, 239});
         walls.push_back({2733, -1221, 1327, 50});
 
-        gateRectOpen = {3209, -660, 50, 164};
+        gateRectOpen = {2786, -889, 583, 239};
         gateRectClosed = {3205, -851, 50, 164};
     }
 }
@@ -463,7 +464,7 @@ vector<Clue> &Level::getClues()
     return clues;
 }
 
-void Level::loadFromFile(const std::string &filename, Render &window)
+void Level::loadFromFile(Render &window)
 {
     SDL_Texture *skins[3];
     skins[0] = window.loadTexture("src/res/gfx/ppl_textures/desert enemy/idle.png");
@@ -525,7 +526,7 @@ void Level::loadFromFile(const std::string &filename, Render &window)
     }
 }
 
-void Level::saveToFile(const std::string &filename)
+void Level::saveToFile()
 {
     std::ofstream outFile("level.bin", std::ios::binary);
     if (!outFile)
