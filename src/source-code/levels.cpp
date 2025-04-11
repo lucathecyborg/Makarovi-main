@@ -131,8 +131,16 @@ vector<SDL_Rect> &Level::getWalls()
 
 void Level::resetLevel()
 {
+    srcRect = {(sizeX - 1920) / 2, (sizeY - 1080) / 2, 1920, 1080};
+    walls.clear();
+    deathBarriers.clear();
+    createWalls();
     enemies.clear();
     createEnemies();
+    clues.clear();
+    createClues();
+    player1.setHealth(100);
+    levelComplete = false;
 }
 
 void Level::moveAll(int x, int y)

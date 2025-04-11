@@ -325,3 +325,51 @@ void tutorial(Render &window)
         window.display();
     }
 }
+
+int selectScreen(Render &window)
+{
+    Button replayFromStart(150, 546, 410, 200, window.loadTexture("src/res/dev/replayStart.png"), window.loadTexture("src/res/dev/replayStart pressed.png"));
+    Button replayLevel(1360, 540, 410, 200, window.loadTexture("src/res/dev/replayLevel.png"), window.loadTexture("src/res/dev/replayLevel pressed.png"));
+    Button quitAndSave(494, 825, 410, 200, window.loadTexture("src/res/dev/save and quit.png"), window.loadTexture("src/res/dev/save and quit pressed.png"));
+    Button quit(1010, 825, 410, 200, window.loadTexture("src/res/dev/quit without saving.png"), window.loadTexture("src/res/dev/quit without saving pressed.png"));
+    SDL_Texture *backroundWin = window.loadTexture("src/res/dev/endBackroundWin.png");
+    bool running = true;
+    SDL_Event event;
+    while (running)
+    {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+            {
+                if (SDL_HasIntersection(&mouseRect, replayFromStart.getHitbox()))
+                {
+                    return 1;
+                }
+                else if (SDL_HasIntersection(&mouseRect, replayLevel.getHitbox()))
+                {
+                    return 2;
+                }
+                else if (SDL_HasIntersection(&mouseRect, quitAndSave.getHitbox()))
+                {
+                    return 3;
+                }
+                else if (SDL_HasIntersection(&mouseRect, quit.getHitbox()))
+                {
+                    Quit(window);
+                }
+            }
+        }
+
+        window.clear();
+        window.renderTexture1(backroundWin, {0, 0, 1920, 1080});
+        quit.render(window, mouseRect);
+        quitAndSave.render(window, mouseRect);
+        replayLevel.render(window, mouseRect);
+        replayFromStart.render(window, mouseRect);
+        window.display();
+    }
+    return 0;
+}

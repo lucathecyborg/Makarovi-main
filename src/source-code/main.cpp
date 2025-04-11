@@ -282,14 +282,17 @@ int main(int argc, char *args[])
 
         if (levels[level_counter].getPlayer().Alive() == false)
         {
-            gameRunning = false;
             gameOver(window, font);
-            goto Finish;
+            selectScreen(window);
         }
-        if (levels[level_counter].checkCollision(player.getHitbox()))
+        if (!levels[level_counter].checkDeathCollision(player.getHitbox()))
+        {
+            gameOver(window, font);
+            selectScreen(window);
+        }
 
-            // RENDERING
-            window.clear();
+        // RENDERING
+        window.clear();
 
         levels[level_counter].render();
         levels[level_counter].renderCounter(window);
@@ -350,11 +353,6 @@ int main(int argc, char *args[])
                     player.Move(960, 540);
                 }
             }
-        }
-        if (!levels[level_counter].checkDeathCollision(player.getHitbox()))
-        {
-            gameRunning = false;
-            gameOver(window, font);
         }
     }
 
