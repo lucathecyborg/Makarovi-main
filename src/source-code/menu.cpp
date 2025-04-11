@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <ctime>
 #include <string>
@@ -15,6 +16,7 @@
 
 int menu(Render &window, Level levels[], int &levelNumber)
 {
+
     bool menu = true;
     SDL_Event event;
     SDL_Texture *menuTex = window.loadTexture("src/res/dev/main menu.png");

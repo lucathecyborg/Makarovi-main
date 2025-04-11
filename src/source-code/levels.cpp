@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <ctime>
 #include <string>
@@ -15,7 +16,7 @@
 
 Player Level::player1 = Player();
 
-Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *start1, SDL_Texture *gateC, SDL_Texture *gateO)
+Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *start1, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1)
 {
     mapTex = Tex;
     this->levelNumber = levelNumber;
@@ -27,6 +28,7 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     setupTex = start1;
     gateClosed = gateC;
     gateOpen = gateO;
+    level_music = level_music1;
     if (levelNumber == 3)
     {
         scientist = new Entity(2933, -880, window.loadTexture("src/res/gfx/scientist.png"), true);
@@ -385,7 +387,7 @@ bool Level::checkClues(Entity *player1)
 
 void Level::start()
 {
-
+    play();
     window.clear();
     window.renderTexture(setupTex, {0, 0, 1920, 1080}, dstRect);
     window.display();
@@ -673,4 +675,21 @@ void Level::clueRoom(Render &window)
         backButton.render(window, mouseRect);
         window.display();
     }
+}
+
+void Level::play()
+{
+    Mix_PlayMusic(level_music, -1);
+}
+void Level::stop()
+{
+    Mix_HaltMusic();
+}
+void Level::pause()
+{
+    Mix_PauseMusic();
+}
+void Level::resume()
+{
+    Mix_ResumeMusic();
 }

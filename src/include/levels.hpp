@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <ctime>
 #include <string>
@@ -39,10 +40,11 @@ class Level
     SDL_Rect gateRectClosed;
     Entity *scientist;
     SDL_Texture *clueRoomTex;
+    Mix_Music *level_music;
 
 public:
     static Player player1;
-    Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO);
+    Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1);
     void render();
     SDL_Texture *getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
@@ -75,4 +77,8 @@ public:
     int numberCheck();
     void renderCounter(Render &window);
     void clueRoom(Render &window);
+    void play();
+    void stop();
+    void pause();
+    void resume();
 };

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <SDL2/SDL_mixer.h>
 
 #include "Render.hpp"
 #include "Entity.hpp"
@@ -15,13 +16,38 @@
 int main(int argc, char *args[])
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) > 0)
+    {
         std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+        return -1;
+    }
 
     if (!(IMG_Init(IMG_INIT_PNG)))
+    {
         std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+        return -1;
+    }
 
     if ((TTF_Init() == -1))
+    {
         std::cout << "TTF_Init has failed. Error: " << SDL_GetError() << std::endl;
+        return -1;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        std::cerr << "SDL_mixer Init error: " << Mix_GetError() << "\n";
+        return -1;
+    }
+
+    Mix_Music *menuMusic = Mix_LoadMUS("src/res/sounds/menu.mp3");
+    if (!menuMusic)
+    {
+        std::cerr << "Failed to load menu music: " << Mix_GetError() << std::endl;
+    }
+    else
+    {
+        Mix_PlayMusic(menuMusic, -1);
+    }
 
     Render window("Johnny Englishhh", 1920, 1080);
 
@@ -60,12 +86,13 @@ int main(int argc, char *args[])
     SDL_Texture *jailTexO = window.loadTexture("src/res/dev/jailOpen.png");
     SDL_Texture *jailTexC = window.loadTexture("src/res/dev/jailClosed.png");
 
-    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO)};
+    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/desert level.mp3")), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/jungle.mp3")), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO, Mix_LoadMUS("src/res/sounds/city.mp3"))};
     levels[0].loadPlayer(player);
     int level_counter = 0;
     bool gameRunning = true;
 
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
+    Mix_HaltMusic();
     std::cout << level_counter << std::endl;
     bool win = false;
     bool playersetup1;
@@ -362,6 +389,7 @@ int main(int argc, char *args[])
                 }
                 else
                 {
+                    levels[level_counter].stop();
                     level_counter++;
                     if (level_counter == 3)
                     {
@@ -370,6 +398,7 @@ int main(int argc, char *args[])
                     else
                     {
                     setup:
+
                         playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
                         player.setTex(player_Walking_Forward[0]);
                         player.Move(960, 540);
@@ -380,6 +409,7 @@ int main(int argc, char *args[])
     }
 
 Finish:
+
     Quit(window);
 
     return 0;

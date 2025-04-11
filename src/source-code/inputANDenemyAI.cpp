@@ -11,6 +11,7 @@
 #include <iostream>
 void enemyAI(std::vector<Entity> &enemies, int number, Level levels[], int level_counter, int modifier)
 {
+
     float movement = 0;
     if (modifier == 1)
         movement = 0.5;
@@ -81,7 +82,6 @@ void enemyAI(std::vector<Entity> &enemies, int number, Level levels[], int level
 bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Texture *player_Walking_Forward[], SDL_Texture *player_Walking_Backward[], bool &punch, Render &window, bool &moveUp, bool &moveDown, bool &moveLeft, bool &moveRight, Level level[], int &level_counter)
 {
     bool input = false;
-
     const Uint8 *keystates = SDL_GetKeyboardState(NULL);
     moveUp = keystates[SDL_SCANCODE_W] || keystates[SDL_SCANCODE_UP];
     moveDown = keystates[SDL_SCANCODE_S] || keystates[SDL_SCANCODE_DOWN];
@@ -115,7 +115,9 @@ bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Text
         {
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
+                Mix_PauseMusic();
                 level_counter = menu(window, level, level_counter); // Update level_counter with the returned value
+                Mix_ResumeMusic();
             }
             if (event.key.keysym.sym == SDLK_UP)
             {
@@ -135,7 +137,6 @@ bool playerSetup(Entity &player, SDL_Texture *mapTex, Render window, SDL_Rect sr
 {
 
     currentLevel.start();
-
     int currentTicks = 0;
     int x = 960, y = 1180;
     int i = 0;
