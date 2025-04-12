@@ -143,6 +143,10 @@ void Level::resetLevel()
     createClues();
     player1.setHealth(100);
     player1.setAlive(true);
+    if (levelNumber == 3)
+    {
+        scientist->Move(2933, -880);
+    }
     levelComplete = false;
 }
 

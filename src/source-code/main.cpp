@@ -386,7 +386,7 @@ int main(int argc, char *args[])
                 {
                     win = true;
                     gameOver(window, font, win);
-                    selectScreen(window, win);
+                    selection = selectScreen(window, win);
                     switch (selection)
                     {
                     case 1:
@@ -419,7 +419,7 @@ int main(int argc, char *args[])
                     else
                     {
                     setup:
-
+                        std::cout << "setup: " << level_counter << std::endl;
                         playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
                         player.setTex(player_Walking_Forward[0]);
                         player.Move(960, 540);
