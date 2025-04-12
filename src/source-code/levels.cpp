@@ -367,6 +367,27 @@ void Level::createClues()
         clues.push_back(Clue(-866, -190, false, window));
         clues[4].SetClueType("clue", "How dare they cut down this tree! At least the gate should be open now.");
     }
+    else if (levelNumber == 3)
+    {
+        clues.push_back(Clue(1444, 768, false, window));
+        clues[0].SetClueType("clue", "What a busy city! I should check those parking spaces above me.");
+        clues.push_back(Clue(274, -841, false, window));
+        clues[1].SetClueType("clue", "All empty here, I'll check the offices.");
+        clues.push_back(Clue(-431, 517, false, window));
+        clues[2].SetClueType("clue", "Hmmm..., I wonder what they are discussing in the meeting room?");
+        clues.push_back(Clue(-1990, -1001, false, window));
+        clues[3].SetClueType("question", "How many office cubicles are there?.", "6", "Looks like I need to go to the park.");
+        clues.push_back(Clue(-1869, 1890, false, window));
+        clues[4].SetClueType("clue", "There's trash here. I should check the garbage area.");
+        clues.push_back(Clue(3477, 1214, false, window));
+        clues[5].SetClueType("clue", "Maybe there's another clue around here?");
+        clues.push_back(Clue(3133, 2133, false, window));
+        clues[6].SetClueType("clue", "How about I look around the bus lane?");
+        clues.push_back(Clue(2437, -274, false, window));
+        clues[7].SetClueType("clue", "Now I just have to clear the prison.");
+        clues.push_back(Clue(3825, -770, false, window));
+        clues[8].SetClueType("question", "How many parking spaces were there earlier?", "5", "I can finally save the scientist!");
+    }
 }
 
 bool Level::checkClues(Entity *player1)

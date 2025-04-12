@@ -102,6 +102,7 @@ int main(int argc, char *args[])
     int modifier;
     int redCooldown = 0;
     SDL_DisplayMode displayMode;
+    int selection;
     if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
     {
         std::cout << "Refresh Rate: " << displayMode.refresh_rate << " Hz" << std::endl;
@@ -310,7 +311,7 @@ int main(int argc, char *args[])
         if (levels[level_counter].getPlayer().Alive() == false || !levels[level_counter].checkDeathCollision(player.getHitbox()))
         {
             gameOver(window, font, win);
-            int selection = selectScreen(window, win);
+            selection = selectScreen(window, win);
             switch (selection)
             {
             case 1:
@@ -386,6 +387,26 @@ int main(int argc, char *args[])
                     win = true;
                     gameOver(window, font, win);
                     selectScreen(window, win);
+                    switch (selection)
+                    {
+                    case 1:
+                        for (int i = 0; i < 3; i++)
+                        {
+                            levels[i].resetLevel();
+                        }
+                        level_counter = 0;
+                        goto setup;
+                        break;
+                    case 2:
+                        levels[level_counter].resetLevel();
+                        goto setup;
+                        break;
+                    case 3:
+                        levels[level_counter].resetLevel();
+                        levels[level_counter].saveToFile();
+                        gameRunning = false;
+                        break;
+                    }
                 }
                 else
                 {
