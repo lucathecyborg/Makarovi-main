@@ -49,6 +49,10 @@ int main(int argc, char *args[])
         Mix_PlayMusic(menuMusic, -1);
     }
 
+    Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
+    Mix_Chunk *damageSound = Mix_LoadWAV("src/res/sounds/damage.wav");
+    Mix_Chunk *healSound = Mix_LoadWAV("src/res/sounds/heal.wav");
+
     Render window("Johnny Englishhh", 1920, 1080);
 
     TTF_Font *font = TTF_OpenFont("src/res/dev/ROGFonts-Regular.otf", 24);
@@ -266,6 +270,7 @@ int main(int argc, char *args[])
             healthPack.setAlive(false);
             heal = true;
             healtime = ticks;
+            Mix_PlayChannel(-1, healSound, 0);
         }
 
         // DAMAGE
@@ -276,9 +281,11 @@ int main(int argc, char *args[])
                 if (levels[level_counter].useEnemy(i).Alive() == true && ticks - lastDamageTime > 1000)
                 {
                     levels[level_counter].getPlayer().Damage(10);
+
                     lastDamageTime = ticks;
                     damageTime = true;
                     redCooldown = ticks;
+                    Mix_PlayChannel(-1, damageSound, 0);
                 }
             }
 
@@ -292,6 +299,7 @@ int main(int argc, char *args[])
                     levels[level_counter].useEnemy(i).setAlive(false);
                     punch = false;
                     lastPunchTime = ticks;
+                    Mix_PlayChannel(-1, punchSound, 0);
                 }
             }
         }
