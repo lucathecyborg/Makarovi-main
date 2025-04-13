@@ -51,7 +51,6 @@ int main(int argc, char *args[])
 
     Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
     Mix_Chunk *damageSound = Mix_LoadWAV("src/res/sounds/damage.wav");
-    Mix_Chunk *healSound = Mix_LoadWAV("src/res/sounds/heal.wav");
 
     Render window("Johnny Englishhh", 1920, 1080);
 
@@ -164,11 +163,8 @@ int main(int argc, char *args[])
     SDL_Rect tempRect;
 
     SDL_Texture *enemyTex = window.loadTexture("src/res/gfx/idle.png");
-    SDL_Texture *healthPackTex = window.loadTexture("src/res/gfx/healthpack.png");
     SDL_Texture *exclamationTex = window.loadTexture("src/res/gfx/!.png");
     SDL_Rect playerRect = {960, 540, 100, 100};
-
-    Entity healthPack(500, 500, healthPackTex, true);
 
     Text text1(window.getRenderer(), textColor, font, "Health: " + std::to_string(static_cast<int>(levels[level_counter].getPlayer().getHealth())), textWidth, 0, 150, 400);
 
@@ -202,7 +198,6 @@ int main(int argc, char *args[])
         {
             if (moveUp && levels[level_counter].getSrcRect().y - movementSpeed >= 0)
             {
-                healthPack.Move(healthPack.getX(), healthPack.getY() + movementSpeed);
 
                 levels[level_counter].moveAll(0, movementSpeed);
 
@@ -222,8 +217,6 @@ int main(int argc, char *args[])
             if (moveDown && levels[level_counter].getSrcRect().y + movementSpeed <= levels[level_counter].getY() - 1180)
             {
 
-                healthPack.Move(healthPack.getX(), healthPack.getY() - movementSpeed);
-
                 levels[level_counter].moveAll(0, -movementSpeed);
                 lastMove.Down = true;
                 if (ticks - Current_ticks >= animation_time)
@@ -241,8 +234,6 @@ int main(int argc, char *args[])
             if (moveLeft && levels[level_counter].getSrcRect().x - movementSpeed >= 0)
             {
 
-                healthPack.Move(healthPack.getX() + movementSpeed, healthPack.getY());
-
                 levels[level_counter].moveAll(movementSpeed, 0);
                 lastMove.Left = true;
             }
@@ -254,8 +245,6 @@ int main(int argc, char *args[])
             if (moveRight && levels[level_counter].getSrcRect().x + movementSpeed <= levels[level_counter].getX() - 2020)
             {
 
-                healthPack.Move(healthPack.getX() - movementSpeed, healthPack.getY());
-
                 levels[level_counter].moveAll(-movementSpeed, 0);
                 lastMove.Right = true;
             }
@@ -263,16 +252,14 @@ int main(int argc, char *args[])
         // END OF MOVEMENT ------------------------------------------------------------------------------------------------------------------------------------------------
 
         enemyAI(levels[level_counter].getEnemies(), levels[level_counter].getEnemyNumber(), levels, level_counter, modifier);
-
-        if (SDL_HasIntersection(&playerRect, healthPack.getHitbox()) && levels[level_counter].getPlayer().getHealth() != 100 && healthPack.Alive() == true)
+        if (ticks - healtime > 200)
         {
-            levels[level_counter].getPlayer().Damage(-50);
-            healthPack.setAlive(false);
-            heal = true;
-            healtime = ticks;
-            Mix_PlayChannel(-1, healSound, 0);
+            heal = levels[level_counter].checkHeal(&playerRect);
+            if (heal)
+            {
+                healtime = ticks;
+            }
         }
-
         // DAMAGE
         for (int i = 0; i < levels[level_counter].getEnemyNumber(); i++)
         {
@@ -347,7 +334,6 @@ int main(int argc, char *args[])
 
         levels[level_counter].render();
         levels[level_counter].renderCounter(window);
-        window.renderEntity(healthPack, healthPack.getX(), healthPack.getY(), 50, 50, healthPack.Alive());
         window.renderPlayer(&player);
         text1.setText("Health: " + std::to_string(static_cast<int>(levels[level_counter].getPlayer().getHealth())));
         text1.renderText1(textWidth, textHeight);

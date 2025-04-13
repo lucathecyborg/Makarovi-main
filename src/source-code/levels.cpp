@@ -42,6 +42,7 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     createWalls();
     createEnemies();
     createClues();
+    createHealthpacks();
 }
 
 void Level::render()
@@ -54,6 +55,10 @@ void Level::render()
     for (int i = 0; i < clues.size(); i++)
     {
         window.renderEntity(clues.at(i), clues.at(i).getX(), clues.at(i).getY(), 100, 100, clues.at(i).Alive());
+    }
+    for (int i = 0; i < healthPacks.size(); i++)
+    {
+        window.renderEntity(healthPacks.at(i), healthPacks.at(i).getX(), healthPacks.at(i).getY(), 50, 50, healthPacks.at(i).Alive());
     }
     if (levelNumber == 3)
     {
@@ -72,7 +77,6 @@ void Level::render()
 
 void Level::createEnemies()
 {
-    srand(time(NULL));
     SDL_Rect enemyTempRect;
     int EnemyX, EnemyY;
     bool collision;
@@ -174,6 +178,10 @@ void Level::moveAll(int x, int y)
     {
         scientist->Move(scientist->getX() + x, scientist->getY() + y);
     }
+    for (int i = 0; i < healthPacks.size(); i++)
+    {
+        healthPacks.at(i).Move(healthPacks.at(i).getX() + x, healthPacks.at(i).getY() + y);
+    }
 
     gateRectClosed.x += x;
     gateRectOpen.x += x;
@@ -196,6 +204,23 @@ bool Level::checkCollision(SDL_Rect *playerHitbox)
     if (SDL_HasIntersection(playerHitbox, &gateRectClosed))
     {
         return true;
+    }
+    return false;
+}
+bool Level::checkHeal(SDL_Rect *playerRect)
+{
+    for (int i = 0; i < healthPacks.size(); i++)
+    {
+        if (healthPacks.at(i).Alive() == true)
+        {
+            if (SDL_HasIntersection(playerRect, healthPacks[i].getHitbox()) && player1.getHealth() != 100)
+            {
+                player1.Damage(-50);
+                healthPacks[i].setAlive(false);
+                Mix_PlayChannel(-1, healSound, 0);
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -394,6 +419,40 @@ void Level::createClues()
     }
 }
 
+void Level::createHealthpacks()
+{
+    SDL_Rect tempRect;
+    int healthX, healthY;
+    bool collision;
+    for (int i = 0; i < levelNumber * 2; i++)
+    {
+        do
+        {
+            if (levelNumber == 1)
+            {
+                healthX = rand() % 2646 - 413;
+                healthY = rand() % 1440 - 227;
+            }
+            else if (levelNumber == 2)
+            {
+                healthX = rand() % 4944 - 1555;
+                healthY = rand() % 2727 - 873;
+            }
+            else if (levelNumber == 3)
+            {
+                healthX = rand() % (3960 - (-2140) + 1) + (-2140);
+                healthY = rand() % (2183 - (-1204) + 1) + (-1204);
+            }
+
+            tempRect = {healthX, healthY, 100, 100};
+            collision = enemyCheckCollision(&tempRect);
+
+        } while (collision);
+
+        healthPacks.push_back(Entity(healthX, healthY, window.loadTexture("src/res/gfx/healthpack.png"), true));
+    }
+}
+
 bool Level::checkClues(Entity *player1)
 {
 
@@ -423,7 +482,7 @@ void Level::start()
     {
         while (SDL_PollEvent(&event))
         {
-            if (event.type = SDL_KEYDOWN)
+            if (event.type == SDL_KEYDOWN)
             {
                 if (event.key.keysym.sym == SDLK_RETURN)
                 {
@@ -718,27 +777,3 @@ void Level::resume()
 {
     Mix_ResumeMusic();
 }
-
-/* Level::~Level()
-{
-    // No need to explicitly call destructors for objects in vectors
-    // std::vector will automatically clean up its elements
-
-    if (scientist != nullptr)
-    {
-        delete scientist; // Properly delete dynamically allocated scientist
-        scientist = nullptr;
-    }
-
-    // Free SDL textures
-    SDL_DestroyTexture(mapTex);
-    SDL_DestroyTexture(setupTex);
-    SDL_DestroyTexture(gateClosed);
-    SDL_DestroyTexture(gateOpen);
-    SDL_DestroyTexture(clueRoomTex);
-
-    // Free music
-    Mix_FreeMusic(level_music);
-} */
-
-// ill do this at some point trust me

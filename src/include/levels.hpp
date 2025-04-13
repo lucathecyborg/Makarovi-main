@@ -45,8 +45,9 @@ class Level
 public:
     static Player player1;
     Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1);
-    ~Level() {};
     void render();
+    bool checkHeal(SDL_Rect *playerHitbox);
+    Mix_Chunk *healSound = Mix_LoadWAV("src/res/sounds/heal.wav");
     SDL_Texture *getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
     SDL_Rect getDstRect() { return dstRect; }
@@ -65,6 +66,7 @@ public:
     bool checkComplete();
     bool checkDeathCollision(SDL_Rect *playerHitbox);
     void createClues();
+    void createHealthpacks();
     bool checkClues(Entity *player1);
     vector<Clue> &getClues();
     Render getWindow() { return window; };
