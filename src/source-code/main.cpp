@@ -49,12 +49,12 @@ int main(int argc, char *args[])
         Mix_PlayMusic(menuMusic, -1);
     }
 
-    Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
     Mix_Chunk *damageSound = Mix_LoadWAV("src/res/sounds/damage.wav");
+    Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
 
     Render window("Johnny Englishhh", 1920, 1080);
 
-    TTF_Font *font = TTF_OpenFont("src/res/dev/ROGFonts-Regular.otf", 24);
+    TTF_Font *font = TTF_OpenFont("src/res/dev/ROGFonts-Regular.otf", 60);
     SDL_Color textColor = {255, 0, 0, 200};
     SDL_Texture *player_Walking_Forward[4];
     SDL_Texture *player_Walking_Backward[4];
@@ -276,17 +276,17 @@ int main(int argc, char *args[])
                 }
             }
 
-            // PUNCHING
+                   // PUNCHING
             if ((levels[level_counter].useEnemy(i).Circle(levels[level_counter].useEnemy(i).getX(), levels[level_counter].useEnemy(i).getY(), 200) && levels[level_counter].useEnemy(i).Alive() == true))
             {
                 renderEx = true;
                 SDL_Rect exclamationRect = {playerRect.x + (playerRect.w / 2) - 50, playerRect.y - 100, 100, 100};
                 if (punch == true && ticks - lastPunchTime > 400)
                 {
+                    Mix_PlayChannel(-1, punchSound, 0);
                     levels[level_counter].useEnemy(i).setAlive(false);
                     punch = false;
                     lastPunchTime = ticks;
-                    Mix_PlayChannel(-1, punchSound, 0);
                 }
             }
         }

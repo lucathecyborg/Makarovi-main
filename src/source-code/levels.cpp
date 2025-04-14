@@ -471,7 +471,7 @@ bool Level::checkClues(Entity *player1)
 
 void Level::start()
 {
-    play();
+    Mix_HaltMusic();
     window.clear();
     window.renderTexture(setupTex, {0, 0, 1920, 1080}, dstRect);
     window.display();
@@ -491,6 +491,7 @@ void Level::start()
             }
         }
     }
+    play();
 }
 
 SDL_Rect &Level::getgateRect()
