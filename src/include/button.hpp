@@ -16,15 +16,8 @@ class Button
 public:
     Button(int x, int y, int w1, int h1, SDL_Texture *tex1);
     Button(int x, int y, int w1, int h1, SDL_Texture *tex1, SDL_Texture *tex2);
-
-    bool GetPressed();
     void setPressed(bool status);
-    bool IsPressed();
     SDL_Rect *getHitbox();
     void render(Render &window, SDL_Rect mouseRect);
     void setPosition(int x, int y, int w, int h);
-    SDL_Texture *getTex()
-    {
-        return tex;
-    }
 };

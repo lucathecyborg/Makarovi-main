@@ -25,16 +25,6 @@ void Button::setPressed(bool status)
     pressed = status;
 }
 
-bool Button::GetPressed()
-{
-    return pressed;
-}
-
-bool Button::IsPressed()
-{
-    return pressed;
-}
-
 void Button::render(Render &window, SDL_Rect mouseRect)
 {
     if (SDL_HasIntersection(&mouseRect, &hitbox))
