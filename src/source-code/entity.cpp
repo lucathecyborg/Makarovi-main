@@ -107,16 +107,6 @@ void Entity::setAlive(bool status)
     alive = status;
 }
 
-float const Entity::getPrevX()
-{
-    return prevX;
-}
-
-float const Entity::getPrevY()
-{
-    return prevY;
-}
-
 Clue::Clue(float p_x, float p_y, bool life, Render &window)
 {
     x = p_x;
@@ -273,16 +263,6 @@ void Clue::SetClueType(string type, string question, string odgovor1, string tex
     Text answer1(window1.getRenderer(), textColor, answerFont, answer, 673, 858, 104, 618);
     answers = answer1;
     tempAns = text;
-}
-
-void Entity::setPrevX(float x1)
-{
-    prevX = x1;
-}
-
-void Entity::setPrevY(float y1)
-{
-    prevY = y1;
 }
 
 string Clue::getAnswer()
