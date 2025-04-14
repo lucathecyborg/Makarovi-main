@@ -46,7 +46,7 @@ int main(int argc, char *args[])
     }
     else
     {
-        Mix_PlayMusic(menuMusic, -1);
+        Mix_FadeInMusic(menuMusic, -1, 5000);
     }
 
     Mix_Chunk *damageSound = Mix_LoadWAV("src/res/sounds/damage.wav");

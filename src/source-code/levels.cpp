@@ -471,7 +471,7 @@ bool Level::checkClues(Entity *player1)
 
 void Level::start()
 {
-    Mix_HaltMusic();
+    Mix_FadeOutMusic(1000);
     window.clear();
     window.renderTexture(setupTex, {0, 0, 1920, 1080}, dstRect);
     window.display();
@@ -764,7 +764,7 @@ void Level::clueRoom(Render &window)
 
 void Level::play()
 {
-    Mix_PlayMusic(level_music, -1);
+    Mix_FadeInMusic(level_music, -1, 5000);
 }
 void Level::stop()
 {

@@ -20,11 +20,6 @@ Button::Button(int x, int y, int w1, int h1, SDL_Texture *tex1, SDL_Texture *tex
     hitbox = {x, y, w1, h1};
 }
 
-void Button::setPressed(bool status)
-{
-    pressed = status;
-}
-
 void Button::render(Render &window, SDL_Rect mouseRect)
 {
     if (SDL_HasIntersection(&mouseRect, &hitbox))
