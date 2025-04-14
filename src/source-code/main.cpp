@@ -53,7 +53,8 @@ int main(int argc, char *args[])
     Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
 
     Render window("Johnny Englishhh", 1920, 1080);
-
+    window.renderTexture1(window.loadTexture("src/res/dev/loading.png"), {0, 0, 1920, 1080});
+    window.display();
     TTF_Font *font = TTF_OpenFont("src/res/dev/ROGFonts-Regular.otf", 60);
     SDL_Color textColor = {255, 0, 0, 200};
     SDL_Texture *player_Walking_Forward[4];
@@ -81,7 +82,7 @@ int main(int argc, char *args[])
 
     SDL_Texture *startup1 = window.loadTexture("src/res/dev/startup1.png");
     SDL_Texture *startup2 = window.loadTexture("src/res/dev/startup2.png");
-    SDL_Texture *startup3 = window.loadTexture("src/res/dev/startup1.png");
+    SDL_Texture *startup3 = window.loadTexture("src/res/dev/startup3.png");
 
     SDL_Texture *gateClosed = window.loadTexture("src/res/dev/gate1.png");
     SDL_Texture *gateOpen = window.loadTexture("src/res/dev/gate1_open.png");
@@ -89,11 +90,11 @@ int main(int argc, char *args[])
     SDL_Texture *jailTexO = window.loadTexture("src/res/dev/jailOpen.png");
     SDL_Texture *jailTexC = window.loadTexture("src/res/dev/jailClosed.png");
 
-    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/desert level.mp3")), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/jungle.mp3")), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup1, jailTexC, jailTexO, Mix_LoadMUS("src/res/sounds/city.mp3"))};
+    Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/desert level.mp3")), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/jungle.mp3")), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup3, jailTexC, jailTexO, Mix_LoadMUS("src/res/sounds/city.mp3"))};
     levels[0].loadPlayer(player);
     int level_counter = 0;
     bool gameRunning = true;
-
+    window.clear();
     level_counter = menu(window, levels, level_counter); // Use the updated menu function
     Mix_HaltMusic();
     std::cout << level_counter << std::endl;
@@ -276,7 +277,7 @@ int main(int argc, char *args[])
                 }
             }
 
-                   // PUNCHING
+            // PUNCHING
             if ((levels[level_counter].useEnemy(i).Circle(levels[level_counter].useEnemy(i).getX(), levels[level_counter].useEnemy(i).getY(), 200) && levels[level_counter].useEnemy(i).Alive() == true))
             {
                 renderEx = true;
