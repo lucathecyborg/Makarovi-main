@@ -15,6 +15,7 @@
 #include "levels.hpp"
 
 Player Level::player1 = Player();
+Mix_Chunk *Level::gate_sound = nullptr;
 
 Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *start1, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1)
 {
@@ -355,7 +356,7 @@ bool Level::checkComplete()
         if (enemies.at(i).Alive())
         {
             levelComplete = false;
-            goto return1;
+            break;
         }
     }
     for (int i = 0; i < clues.size(); i++)
@@ -363,9 +364,16 @@ bool Level::checkComplete()
         if (!clues.at(i).Alive())
         {
             levelComplete = false;
+            break;
         }
     }
-return1:
+
+    if (levelComplete == true && played == false)
+    {
+        Mix_PlayChannel(-1, gate_sound, 0);
+        played = true;
+    }
+
     return levelComplete;
 }
 
@@ -544,6 +552,11 @@ void Level::loadPlayer(Entity &x)
 {
     Player temp(&x);
     player1 = temp;
+    gate_sound = Mix_LoadWAV("src/res/sounds/door.wav");
+    if (!Level::gate_sound)
+    {
+        std::cerr << "Failed to load gate sound: " << Mix_GetError() << std::endl;
+    }
 }
 
 vector<Clue> &Level::getClues()

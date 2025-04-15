@@ -140,7 +140,7 @@ void Clue::solve(Level &currentLevel)
             {
                 if (event.type == SDL_KEYDOWN)
                 {
-                    if (event.key.keysym.sym == SDLK_RETURN)
+                    if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE)
                     {
                         solved = true;
                         goto end;

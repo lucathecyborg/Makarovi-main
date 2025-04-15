@@ -41,6 +41,8 @@ class Level
     Entity *scientist;
     SDL_Texture *clueRoomTex;
     Mix_Music *level_music;
+    static Mix_Chunk *gate_sound;
+    bool played = false;
 
 public:
     static Player player1;
