@@ -180,9 +180,25 @@ int main(int argc, char *args[])
         bool Right = false;
     } lastMove;
 
+    // Add these variables at the beginning of your game loop
+    int frameCount = 0;
+    uint32_t fpsTimer = SDL_GetTicks();
+
     // GAME LOOP
     while (gameRunning)
     {
+        uint32_t currentFrameTime = SDL_GetTicks();
+        frameCount++;
+
+        // Calculate FPS every second
+        if (currentFrameTime - fpsTimer >= 1000)
+        {
+            int fps = frameCount;
+            std::cout << "FPS: " << fps << std::endl;
+            frameCount = 0;
+            fpsTimer = currentFrameTime;
+        }
+
         ticks = SDL_GetTicks();
         bool moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
         int tempCount = level_counter;
