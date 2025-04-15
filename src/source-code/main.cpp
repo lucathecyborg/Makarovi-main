@@ -292,7 +292,7 @@ int main(int argc, char *args[])
             }
         }
         punch = false;
-
+        // healthpack collision
         if (checking)
         {
             checking = levels[level_counter].checkClues(&player);
