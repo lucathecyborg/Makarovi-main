@@ -73,8 +73,7 @@ int main(int argc, char *args[])
     clueDist[4] = window.loadTexture("src/res/gfx/signal4.png");
     clueDist[5] = window.loadTexture("src/res/gfx/signal_full.png");
 
-    SDL_Texture *playerTex = window.loadTexture("src/res/gfx/player.png");
-    Entity player(960, 540, playerTex, true);
+    Entity player(960, 540, player_Walking_Forward[0], true);
 
     SDL_Texture *map3Tex = window.loadTexture("src/res/dev/map3.png");
     SDL_Texture *map2Tex = window.loadTexture("src/res/dev/map2.png");
@@ -163,7 +162,6 @@ int main(int argc, char *args[])
     SDL_Event event;
     SDL_Rect tempRect;
 
-    SDL_Texture *enemyTex = window.loadTexture("src/res/gfx/idle.png");
     SDL_Texture *exclamationTex = window.loadTexture("src/res/gfx/!.png");
     SDL_Rect playerRect = {960, 540, 100, 100};
 
