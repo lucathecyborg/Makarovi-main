@@ -45,16 +45,23 @@ class Level
     bool played = false;
 
 public:
+    static int MovementSpeed;
     static Player player1;
+    static int modifier;
+    void setSpeed();
+    int getX() { return sizeX; }
+    int getY() { return sizeY; }
+    int getSpeed() { return MovementSpeed; }
+    int getModifier() { return modifier; }
     Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *setTex, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1);
     void render();
+    int getLevelNumber() { return levelNumber; }
+    Level() {};
     bool checkHeal(SDL_Rect *playerHitbox);
     Mix_Chunk *healSound = Mix_LoadWAV("src/res/sounds/heal.wav");
     SDL_Texture *getTex() { return mapTex; }
     SDL_Rect getSrcRect() { return srcRect; }
     SDL_Rect getDstRect() { return dstRect; }
-    int getX() { return sizeX; }
-    int getY() { return sizeY; }
     void createEnemies();
     Entity &useEnemy(int i);
     vector<Entity> &getEnemies();
@@ -86,4 +93,5 @@ public:
     void stop();
     void pause();
     void resume();
+    SDL_Texture *getMap() { return mapTex; };
 };

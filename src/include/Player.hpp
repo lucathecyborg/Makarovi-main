@@ -17,6 +17,7 @@ public:
     void Damage(int damage);
     bool Alive();
     float &getHealth();
+    Entity *getPlayer1() { return player; }
     Player();
     void setHealth(int helt);
     void setAlive(bool alive);

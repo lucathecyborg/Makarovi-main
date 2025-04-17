@@ -79,7 +79,7 @@ void enemyAI(std::vector<Entity> &enemies, int number, Level levels[], int level
     }
 }
 
-bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Texture *player_Walking_Forward[], SDL_Texture *player_Walking_Backward[], bool &punch, Render &window, bool &moveUp, bool &moveDown, bool &moveLeft, bool &moveRight, Level level[], int &level_counter)
+bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Texture *player_Walking_Forward[], SDL_Texture *player_Walking_Backward[], bool &punch, Render &window, bool &moveUp, bool &moveDown, bool &moveLeft, bool &moveRight, Level level[], int &level_counter, vector<char> movement)
 {
     bool input = false;
     const Uint8 *keystates = SDL_GetKeyboardState(NULL);
@@ -116,7 +116,7 @@ bool inputHandling(SDL_Event event, bool &gameRunning, Player &player1, SDL_Text
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
                 Mix_PauseMusic();
-                level_counter = menu(window, level, level_counter); // Update level_counter with the returned value
+                level_counter = menu(window, level, level_counter, movement); // Update level_counter with the returned value
                 Mix_ResumeMusic();
             }
             if (event.key.keysym.sym == SDLK_UP)

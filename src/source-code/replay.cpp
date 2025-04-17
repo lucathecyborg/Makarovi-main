@@ -1,0 +1,90 @@
+#include "Entity.hpp"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <iostream>
+#include <fstream>
+
+#include "levels.hpp"
+void saveReplay(Level &level, vector<char> movement)
+{
+    string filename = std::to_string(static_cast<char>(level.getLevelNumber())) + "replay.txt";
+    ofstream data2("Level: " + filename + " replay.txt");
+    for (int i = 0; i < movement.size(); i++)
+    {
+        data2 << movement[i];
+    }
+
+    data2.close();
+}
+
+void playReplay(Level &level, vector<char> movement, Render &window)
+{
+
+    SDL_Rect tempRect = {(level.getX() - 1920) / 2, (level.getY() - 1080) / 2, 1920, 1080};
+    SDL_Texture *tempMap = level.getMap();
+    string filename = std::to_string(static_cast<char>(level.getLevelNumber())) + "replay.txt";
+
+    ifstream data("Level: " + filename + " replay.txt");
+    int speed = level.getSpeed();
+    if (!data.is_open())
+    {
+        std::cerr << "Failed to open replay file!" << std::endl;
+        return;
+    }
+
+    char move;
+    SDL_Event event;
+    bool running = true;
+
+    while (running)
+    {
+        // Process events to allow stopping the replay
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_KEYDOWN && (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_ESCAPE))
+            {
+                running = false; // Stop replay on RETURN key
+                break;
+            }
+        }
+
+        if (data >> move)
+        {
+
+            if (move == 'u')
+            {
+                tempRect.y -= speed;
+            }
+            else if (move == 'd')
+            {
+                tempRect.y += speed;
+            }
+            else if (move == 'l')
+            {
+                tempRect.x -= speed;
+            }
+            else if (move == 'r')
+            {
+                tempRect.x += speed;
+            }
+
+            else if (move == 'x' || move == 'n' || move == 'w')
+            {
+                running = false;
+                break;
+            }
+
+            window.clear();
+            window.renderTexture(tempMap, tempRect, {0, 0, 1920, 1080});
+            window.renderTexture1(window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png"), {960, 540, 100, 100});
+            window.display();
+        }
+        else
+        {
+            running = false;
+        }
+    }
+
+    data.close();
+}

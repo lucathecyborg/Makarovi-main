@@ -13,8 +13,9 @@
 #include "Player.hpp"
 #include "button.hpp"
 #include "menu.hpp"
+#include "replay.hpp"
 
-int menu(Render &window, Level levels[], int &levelNumber)
+int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement)
 {
 
     bool menu = true;
@@ -85,7 +86,8 @@ int menu(Render &window, Level levels[], int &levelNumber)
                     }
                     else if (SDL_HasIntersection(&mouseRect, creditsButton.getHitbox()))
                     {
-                        credits(window);
+                        // credits(window);
+                        Replay(window, levels, movement);
                     }
                     else if (SDL_HasIntersection(&mouseRect, optionsButton.getHitbox()))
                     {
@@ -387,4 +389,53 @@ int selectScreen(Render &window, bool win)
         window.display();
     }
     return 0;
+}
+
+void Replay(Render &window, Level levels[], vector<char> movement)
+{
+    Button replay1(158, 742, 372, 139, window.loadTexture("src/res/dev/replay.png"), window.loadTexture("src/res/dev/replayPressed.png"));
+    Button replay2(774, 742, 372, 139, window.loadTexture("src/res/dev/replay.png"), window.loadTexture("src/res/dev/replayPressed.png"));
+    Button replay3(1380, 742, 372, 139, window.loadTexture("src/res/dev/replay.png"), window.loadTexture("src/res/dev/replayPressed.png"));
+    Button quit(1503, 958, 378, 92, window.loadTexture("src/res/dev/tutorial/quit.png"), window.loadTexture("src/res/dev/quit pressed2.png"));
+    bool running = true;
+    SDL_Event event;
+    SDL_Texture *replayTex = window.loadTexture("src/res/dev/replayScreen.png");
+
+    while (running)
+    {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+            {
+                if (SDL_HasIntersection(&mouseRect, replay1.getHitbox()))
+                {
+                    playReplay(levels[0], movement, window);
+                }
+                else if (SDL_HasIntersection(&mouseRect, replay2.getHitbox()))
+                {
+                    playReplay(levels[1], movement, window);
+                }
+                else if (SDL_HasIntersection(&mouseRect, replay3.getHitbox()))
+                {
+                    playReplay(levels[2], movement, window);
+                }
+                else if (SDL_HasIntersection(&mouseRect, quit.getHitbox()))
+                {
+                    running = false;
+                }
+            }
+        }
+
+        window.clear();
+        window.renderTexture1(replayTex, {0, 0, 1920, 1080});
+
+        quit.render(window, mouseRect);
+        replay1.render(window, mouseRect);
+        replay2.render(window, mouseRect);
+        replay3.render(window, mouseRect);
+        window.display();
+    }
 }

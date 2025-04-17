@@ -16,6 +16,38 @@
 
 Player Level::player1 = Player();
 Mix_Chunk *Level::gate_sound = nullptr;
+int Level::MovementSpeed = 0;
+int Level::modifier = 0;
+
+void Level::setSpeed()
+{
+    SDL_DisplayMode displayMode;
+    int selection;
+    if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
+    {
+        std::cout << "Refresh Rate: " << displayMode.refresh_rate << " Hz" << std::endl;
+    }
+    else
+    {
+        std::cerr << "Could not get display mode! SDL_Error: " << SDL_GetError() << std::endl;
+    }
+
+    if (displayMode.refresh_rate > 100 && displayMode.refresh_rate < 146)
+    {
+        MovementSpeed = 2;
+        modifier = 1;
+    }
+    else if (displayMode.refresh_rate > 65 && displayMode.refresh_rate < 99)
+    {
+        MovementSpeed = 3;
+        modifier = 3;
+    }
+    else if (displayMode.refresh_rate > 29 && displayMode.refresh_rate < 64)
+    {
+        MovementSpeed = 5;
+        modifier = 4;
+    }
+}
 
 Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *start1, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1)
 {
@@ -74,6 +106,7 @@ void Level::render()
     {
         window.renderTexture1(gateOpen, gateRectOpen);
     }
+    window.renderPlayer(player1.getPlayer1());
 }
 
 void Level::createEnemies()
@@ -138,6 +171,9 @@ vector<SDL_Rect> &Level::getWalls()
 
 void Level::resetLevel()
 {
+    SDL_Texture *player_Walking_Forward[4];
+    Entity player(960, 540, player_Walking_Forward[0], true);
+    loadPlayer(player);
     srcRect = {(sizeX - 1920) / 2, (sizeY - 1080) / 2, 1920, 1080};
     walls.clear();
     deathBarriers.clear();
@@ -148,6 +184,9 @@ void Level::resetLevel()
     createClues();
     player1.setHealth(100);
     player1.setAlive(true);
+    player1.getPlayer1()->Move(960, 540); // Reset player position
+    player1.setTex(window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png"));
+
     if (levelNumber == 3)
     {
         scientist->Move(2933, -880);

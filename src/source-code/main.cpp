@@ -12,6 +12,7 @@
 #include "menu.hpp"
 #include "inputANDenemyAI.hpp"
 #include "levels.hpp"
+#include "replay.hpp"
 
 int main(int argc, char *args[])
 {
@@ -65,6 +66,11 @@ int main(int argc, char *args[])
     player_Walking_Backward[2] = window.loadTexture("src/res/gfx/ppl_textures/player/moving backward/moving b3.png");
     player_Walking_Backward[3] = window.loadTexture("src/res/gfx/ppl_textures/player/moving backward/moving b4.png");
 
+    player_Walking_Forward[0] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png");
+    player_Walking_Forward[1] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f2.png");
+    player_Walking_Forward[2] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f3.png");
+    player_Walking_Forward[3] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f4.png");
+
     SDL_Texture *clueDist[6];
     clueDist[0] = window.loadTexture("src/res/gfx/signal0.png");
     clueDist[1] = window.loadTexture("src/res/gfx/signal1.png");
@@ -73,7 +79,7 @@ int main(int argc, char *args[])
     clueDist[4] = window.loadTexture("src/res/gfx/signal4.png");
     clueDist[5] = window.loadTexture("src/res/gfx/signal_full.png");
 
-    Entity player(960, 540, player_Walking_Forward[0], true);
+    Entity player(960, 540, player_Walking_Forward[4], true);
 
     SDL_Texture *map3Tex = window.loadTexture("src/res/dev/map3.png");
     SDL_Texture *map2Tex = window.loadTexture("src/res/dev/map2.png");
@@ -91,48 +97,24 @@ int main(int argc, char *args[])
 
     Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/desert level.mp3")), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/jungle.mp3")), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup3, jailTexC, jailTexO, Mix_LoadMUS("src/res/sounds/city.mp3"))};
     levels[0].loadPlayer(player);
+    levels[0].setSpeed();
     int level_counter = 0;
     bool gameRunning = true;
     window.clear();
-    level_counter = menu(window, levels, level_counter); // Use the updated menu function
+    vector<char> playerMovement;
+    level_counter = menu(window, levels, level_counter, playerMovement);
     Mix_HaltMusic();
     std::cout << level_counter << std::endl;
     bool win = false;
     bool playersetup1;
 
     int lastPunchTime = 0;
-    int movementSpeed = 2;
-    int modifier;
-    int redCooldown = 0;
-    SDL_DisplayMode displayMode;
-    int selection;
-    if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
-    {
-        std::cout << "Refresh Rate: " << displayMode.refresh_rate << " Hz" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Could not get display mode! SDL_Error: " << SDL_GetError() << std::endl;
-    }
 
-    if (displayMode.refresh_rate > 100 && displayMode.refresh_rate < 146)
-    {
-        movementSpeed = 2;
-        modifier = 1;
-    }
-    else if (displayMode.refresh_rate > 65 && displayMode.refresh_rate < 99)
-    {
-        movementSpeed = 3;
-        modifier = 3;
-    }
-    else if (displayMode.refresh_rate > 29 && displayMode.refresh_rate < 64)
-    {
-        movementSpeed = 5;
-        modifier = 4;
-    }
+    int redCooldown = 0;
+    int selection;
 
     if (gameRunning)
-        playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
+        playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], levels[level_counter].getModifier());
 
     player_Walking_Forward[0] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png");
     player.Move(960, 540);
@@ -200,7 +182,7 @@ int main(int argc, char *args[])
         ticks = SDL_GetTicks();
         bool moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
         int tempCount = level_counter;
-        bool input = inputHandling(event, gameRunning, levels[level_counter].getPlayer(), player_Walking_Forward, player_Walking_Backward, punch, window, moveUp, moveDown, moveLeft, moveRight, levels, level_counter);
+        bool input = inputHandling(event, gameRunning, levels[level_counter].getPlayer(), player_Walking_Forward, player_Walking_Backward, punch, window, moveUp, moveDown, moveLeft, moveRight, levels, level_counter, playerMovement);
 
         if (tempCount != level_counter)
             goto setup;
@@ -211,10 +193,10 @@ int main(int argc, char *args[])
         tempRect.y -= 10;
         if (!levels[level_counter].checkCollision(&tempRect))
         {
-            if (moveUp && levels[level_counter].getSrcRect().y - movementSpeed >= 0)
+            if (moveUp && levels[level_counter].getSrcRect().y - levels[level_counter].getSpeed() >= 0)
             {
-
-                levels[level_counter].moveAll(0, movementSpeed);
+                playerMovement.push_back('u');
+                levels[level_counter].moveAll(0, levels[level_counter].getSpeed());
 
                 lastMove.Up = true;
                 if (ticks - Current_ticks >= animation_time)
@@ -229,10 +211,11 @@ int main(int argc, char *args[])
         tempRect.y += 10;
         if (!levels[level_counter].checkCollision(&tempRect))
         {
-            if (moveDown && levels[level_counter].getSrcRect().y + movementSpeed <= levels[level_counter].getY() - 1180)
-            {
 
-                levels[level_counter].moveAll(0, -movementSpeed);
+            if (moveDown && levels[level_counter].getSrcRect().y + levels[level_counter].getSpeed() <= levels[level_counter].getY() - 1180)
+            {
+                playerMovement.push_back('d');
+                levels[level_counter].moveAll(0, -levels[level_counter].getSpeed());
                 lastMove.Down = true;
                 if (ticks - Current_ticks >= animation_time)
                 {
@@ -246,10 +229,11 @@ int main(int argc, char *args[])
         tempRect.x -= 10;
         if (!levels[level_counter].checkCollision(&tempRect))
         {
-            if (moveLeft && levels[level_counter].getSrcRect().x - movementSpeed >= 0)
-            {
 
-                levels[level_counter].moveAll(movementSpeed, 0);
+            if (moveLeft && levels[level_counter].getSrcRect().x - levels[level_counter].getSpeed() >= 0)
+            {
+                playerMovement.push_back('l');
+                levels[level_counter].moveAll(levels[level_counter].getSpeed(), 0);
                 lastMove.Left = true;
             }
         }
@@ -257,16 +241,16 @@ int main(int argc, char *args[])
         tempRect.x += 10;
         if (!levels[level_counter].checkCollision(&tempRect))
         {
-            if (moveRight && levels[level_counter].getSrcRect().x + movementSpeed <= levels[level_counter].getX() - 2020)
+            if (moveRight && levels[level_counter].getSrcRect().x + levels[level_counter].getSpeed() <= levels[level_counter].getX() - 2020)
             {
-
-                levels[level_counter].moveAll(-movementSpeed, 0);
+                playerMovement.push_back('r');
+                levels[level_counter].moveAll(-levels[level_counter].getSpeed(), 0);
                 lastMove.Right = true;
             }
         }
         // END OF MOVEMENT ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        enemyAI(levels[level_counter].getEnemies(), levels[level_counter].getEnemyNumber(), levels, level_counter, modifier);
+        enemyAI(levels[level_counter].getEnemies(), levels[level_counter].getEnemyNumber(), levels, level_counter, levels[level_counter].getModifier());
         if (ticks - healtime > 200)
         {
             heal = levels[level_counter].checkHeal(&playerRect);
@@ -320,6 +304,9 @@ int main(int argc, char *args[])
 
         if (levels[level_counter].getPlayer().Alive() == false || !levels[level_counter].checkDeathCollision(player.getHitbox()))
         {
+            playerMovement.push_back('x');
+            saveReplay(levels[level_counter], playerMovement);
+            playerMovement.clear();
             gameOver(window, font, win);
             selection = selectScreen(window, win);
             switch (selection)
@@ -349,7 +336,6 @@ int main(int argc, char *args[])
 
         levels[level_counter].render();
         levels[level_counter].renderCounter(window);
-        window.renderPlayer(&player);
         text1.setText("Health: " + std::to_string(static_cast<int>(levels[level_counter].getPlayer().getHealth())));
         text1.renderText1(textWidth, textHeight);
         if (renderEx == true)
@@ -391,8 +377,13 @@ int main(int argc, char *args[])
         {
             if (SDL_HasIntersection(&levels[level_counter].getgateRect(), &playerRect))
             {
+                playerMovement.push_back('n');
+                saveReplay(levels[level_counter], playerMovement);
+                playerMovement.clear();
                 if (level_counter == 2)
                 {
+                    playerMovement.push_back('w');
+                    playerMovement.clear();
                     win = true;
                     gameOver(window, font, win);
                     selection = selectScreen(window, win);
@@ -429,7 +420,7 @@ int main(int argc, char *args[])
                     {
                     setup:
                         std::cout << "setup: " << level_counter << std::endl;
-                        playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], modifier);
+                        playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], levels[level_counter].getModifier());
                         player.setTex(player_Walking_Forward[0]);
                         player.Move(960, 540);
                     }

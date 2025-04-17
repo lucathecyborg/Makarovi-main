@@ -97,8 +97,8 @@ void Render::renderEntity(Entity entity, int x, int y, int w, int h, bool alive)
 void Render::renderPlayer(Entity *player1)
 {
     SDL_Rect dst;
-    dst.x = player1->getX();
-    dst.y = player1->getY();
+    dst.x = 960;
+    dst.y = 540;
     dst.w = 100;
     dst.h = 100;
 
