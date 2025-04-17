@@ -38,7 +38,7 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
     Button tutbutton(1364, 540, 378, 86, tutorialTex, tutorialTexPressed);
     Button clueButton(1364, 727, 378, 86, window.loadTexture("src/res/dev/clue.png"), window.loadTexture("src/res/dev/clue pressed.png"));
     Button replayV(177, 973, 422, 86, window.loadTexture("src/res/dev/replayV.png"), window.loadTexture("src/res/dev/replayV pressed.png"));
-    Button replayS(177, 850, 422, 86, window.loadTexture("src/res/dev/replayS.png"), window.loadTexture("src/res/dev/replayS pressed.png"));
+    Button replayS(177, 850, 380, 86, window.loadTexture("src/res/dev/replayS.png"), window.loadTexture("src/res/dev/replayS pressed.png"));
     while (menu)
     {
         window.renderTexture(menuTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
@@ -120,7 +120,7 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                         window.display();
                         SDL_Delay(2000);
                         TTF_CloseFont(Loadfont);
-                                        }
+                    }
                     else if (SDL_HasIntersection(&mouseRect, clueButton.getHitbox()))
                     {
                         levels[levelNumber].clueRoom(window);

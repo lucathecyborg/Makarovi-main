@@ -8,8 +8,8 @@
 #include "levels.hpp"
 void saveReplay(Level &level, vector<char> movement)
 {
-    string filename = std::to_string(static_cast<char>(level.getLevelNumber())) + "replay.txt";
-    ofstream data2("Level: " + filename + " replay.txt");
+    string filename = std::to_string(static_cast<char>(level.getLevelNumber()));
+    ofstream data2(filename + "replay.txt");
     for (int i = 0; i < movement.size(); i++)
     {
         data2 << movement[i];
@@ -23,13 +23,14 @@ void playReplay(Level &level, vector<char> movement, Render &window)
 
     SDL_Rect tempRect = {(level.getX() - 1920) / 2, (level.getY() - 1080) / 2, 1920, 1080};
     SDL_Texture *tempMap = level.getMap();
-    string filename = std::to_string(static_cast<char>(level.getLevelNumber())) + "replay.txt";
+    string filename = std::to_string(static_cast<char>(level.getLevelNumber()));
 
-    ifstream data("Level: " + filename + " replay.txt");
+    ifstream data(filename + "replay.txt");
     int speed = level.getSpeed();
     if (!data.is_open())
     {
         std::cerr << "Failed to open replay file!" << std::endl;
+        cout << filename << endl;
         return;
     }
     uint32_t startTicks = SDL_GetTicks();
