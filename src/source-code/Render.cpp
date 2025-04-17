@@ -159,6 +159,14 @@ void Text::setText(string text1)
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_FreeSurface(textSurface);
 }
+void Text::setText(string text1, SDL_Color color1)
+{
+    text = text1;
+    SDL_DestroyTexture(textTexture);
+    textSurface = TTF_RenderText_Shaded(font, text.c_str(), textColor, color1);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+}
 
 void Text::setText(string text1, int blend)
 {

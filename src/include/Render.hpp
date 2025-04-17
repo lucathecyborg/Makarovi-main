@@ -45,6 +45,7 @@ public:
     Text() {};
     void setText(string text1);
     void setText(string text1, int blend);
+    void setText(string text1, SDL_Color color1);
     Text(SDL_Renderer *renderer, SDL_Color color, TTF_Font *font, string text, int x, int y, int h, int w);
     Text(SDL_Renderer *renderer, SDL_Color color, TTF_Font *font, string text, int x, int y, int h, int w, int blend);
     Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string text1, int x1, int y1, int h1, int w1, SDL_Color color2);

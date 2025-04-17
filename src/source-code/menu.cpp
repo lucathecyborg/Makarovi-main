@@ -37,6 +37,8 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
     Button loadButon(177, 727, 378, 86, loadTex);
     Button tutbutton(1364, 540, 378, 86, tutorialTex, tutorialTexPressed);
     Button clueButton(1364, 727, 378, 86, window.loadTexture("src/res/dev/clue.png"), window.loadTexture("src/res/dev/clue pressed.png"));
+    Button replayV(177, 973, 422, 86, window.loadTexture("src/res/dev/replayV.png"), window.loadTexture("src/res/dev/replayV pressed.png"));
+    Button replayS(177, 850, 422, 86, window.loadTexture("src/res/dev/replayS.png"), window.loadTexture("src/res/dev/replayS pressed.png"));
     while (menu)
     {
         window.renderTexture(menuTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
@@ -121,6 +123,14 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                     {
                         levels[levelNumber].clueRoom(window);
                     }
+                    else if (SDL_HasIntersection(&mouseRect, replayV.getHitbox()))
+                    {
+                        Replay(window, levels, movement);
+                    }
+                    else if (SDL_HasIntersection(&mouseRect, replayS.getHitbox()))
+                    {
+                        saveReplay(levels[levelNumber], movement);
+                    }
                 }
             }
             if (event.type == SDL_QUIT)
@@ -140,6 +150,8 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
         }
         clueButton.render(window, mouseRect);
         tutbutton.render(window, mouseRect);
+        replayS.render(window, mouseRect);
+        replayV.render(window, mouseRect);
         window.display();
         window.clear();
     }
@@ -426,6 +438,10 @@ void Replay(Render &window, Level levels[], vector<char> movement)
                 {
                     running = false;
                 }
+            }
+            if ((event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE))
+            {
+                running = false;
             }
         }
 

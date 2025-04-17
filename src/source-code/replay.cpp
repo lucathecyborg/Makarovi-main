@@ -32,6 +32,8 @@ void playReplay(Level &level, vector<char> movement, Render &window)
         std::cerr << "Failed to open replay file!" << std::endl;
         return;
     }
+    uint32_t startTicks = SDL_GetTicks();
+    Text text1(window.getRenderer(), {0, 0, 0, 255}, TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 100), "Time: " + std::to_string(0), 100, 100, 100, 300, {255, 255, 255, 75});
 
     char move;
     SDL_Event event;
@@ -39,10 +41,11 @@ void playReplay(Level &level, vector<char> movement, Render &window)
 
     while (running)
     {
+        uint32_t elapsedTicks = (SDL_GetTicks() - startTicks) / 1000;
         // Process events to allow stopping the replay
         while (SDL_PollEvent(&event))
         {
-            if (event.type == SDL_KEYDOWN && (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_ESCAPE))
+            if (event.type == SDL_KEYUP && (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_ESCAPE))
             {
                 running = false; // Stop replay on RETURN key
                 break;
@@ -78,6 +81,8 @@ void playReplay(Level &level, vector<char> movement, Render &window)
             window.clear();
             window.renderTexture(tempMap, tempRect, {0, 0, 1920, 1080});
             window.renderTexture1(window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png"), {960, 540, 100, 100});
+            text1.setText("Time: " + std::to_string(elapsedTicks) + "s", {255, 255, 255, 75});
+            text1.renderText(0, 0);
             window.display();
         }
         else
