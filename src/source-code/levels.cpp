@@ -171,9 +171,7 @@ vector<SDL_Rect> &Level::getWalls()
 
 void Level::resetLevel()
 {
-    SDL_Texture *player_Walking_Forward[4];
-    Entity player(960, 540, player_Walking_Forward[0], true);
-    loadPlayer(player);
+
     srcRect = {(sizeX - 1920) / 2, (sizeY - 1080) / 2, 1920, 1080};
     walls.clear();
     deathBarriers.clear();
@@ -184,8 +182,6 @@ void Level::resetLevel()
     createClues();
     player1.setHealth(100);
     player1.setAlive(true);
-    player1.getPlayer1()->Move(960, 540); // Reset player position
-    player1.setTex(window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f1.png"));
 
     if (levelNumber == 3)
     {

@@ -18,4 +18,12 @@ public:
     SDL_Rect *getHitbox();
     void render(Render &window, SDL_Rect mouseRect);
     void setPosition(int x, int y, int w, int h);
+    SDL_Texture *getTex1()
+    {
+        return tex;
+    };
+    SDL_Texture *getTex2()
+    {
+        return pressedTex;
+    };
 };

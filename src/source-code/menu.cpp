@@ -103,6 +103,7 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                         saveText.renderText(450, 300);
                         window.display();
                         SDL_Delay(2000);
+                        TTF_CloseFont(Savefont);
                     }
                     else if (SDL_HasIntersection(&mouseRect, tutbutton.getHitbox()))
                     {
@@ -118,7 +119,8 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                         saveText.renderText(450, 300);
                         window.display();
                         SDL_Delay(2000);
-                    }
+                        TTF_CloseFont(Loadfont);
+                                        }
                     else if (SDL_HasIntersection(&mouseRect, clueButton.getHitbox()))
                     {
                         levels[levelNumber].clueRoom(window);
@@ -155,6 +157,29 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
         window.display();
         window.clear();
     }
+    SDL_DestroyTexture(menuTex);
+    SDL_DestroyTexture(saveTex);
+    SDL_DestroyTexture(loadTex);
+    SDL_DestroyTexture(playTex);
+    SDL_DestroyTexture(creditsTex);
+    SDL_DestroyTexture(optionsTex);
+    SDL_DestroyTexture(quitTex);
+    SDL_DestroyTexture(tutorialTex);
+    SDL_DestroyTexture(tutorialTexPressed);
+    SDL_DestroyTexture(clueButton.getTex1());
+    SDL_DestroyTexture(clueButton.getTex2());
+    SDL_DestroyTexture(tutbutton.getTex1());
+    SDL_DestroyTexture(tutbutton.getTex2());
+    SDL_DestroyTexture(replayS.getTex1());
+    SDL_DestroyTexture(replayS.getTex2());
+    SDL_DestroyTexture(replayV.getTex1());
+    SDL_DestroyTexture(replayV.getTex2());
+    SDL_DestroyTexture(start.getTex1());
+    SDL_DestroyTexture(quit.getTex1());
+    SDL_DestroyTexture(creditsButton.getTex1());
+    SDL_DestroyTexture(optionsButton.getTex1());
+    SDL_DestroyTexture(saveButon.getTex1());
+    SDL_DestroyTexture(loadButon.getTex1());
 
     return levelNumber;
 }
@@ -204,6 +229,9 @@ void credits(Render &window)
         window.display();
         window.clear();
     }
+    SDL_DestroyTexture(quitTex);
+    SDL_DestroyTexture(creditsTex);
+    SDL_DestroyTexture(back.getTex1());
 }
 
 void options(Render &window)
@@ -280,6 +308,9 @@ void options(Render &window)
         window.display();
         window.clear();
     }
+    SDL_DestroyTexture(buttonTex);
+    SDL_DestroyTexture(optionsTex);
+    SDL_DestroyTexture(back.getTex1());
 }
 
 void tutorial(Render &window)
@@ -346,6 +377,23 @@ void tutorial(Render &window)
         back.render(window, mouseRect);
         window.display();
     }
+    SDL_DestroyTexture(pages[0]);
+    SDL_DestroyTexture(pages[1]);
+    SDL_DestroyTexture(pages[2]);
+    SDL_DestroyTexture(pages[3]);
+    SDL_DestroyTexture(pages[4]);
+    SDL_DestroyTexture(pages[5]);
+    SDL_DestroyTexture(arrowB);
+    SDL_DestroyTexture(arrowF);
+    SDL_DestroyTexture(arrowFP);
+    SDL_DestroyTexture(arrowBP);
+    SDL_DestroyTexture(backButton.getTex1());
+    SDL_DestroyTexture(backButton.getTex2());
+    SDL_DestroyTexture(frontButton.getTex1());
+    SDL_DestroyTexture(frontButton.getTex2());
+    SDL_DestroyTexture(back.getTex1());
+    SDL_DestroyTexture(back.getTex2());
+    SDL_DestroyTexture(buttonTex);
 }
 
 int selectScreen(Render &window, bool win)
@@ -400,6 +448,17 @@ int selectScreen(Render &window, bool win)
         replayFromStart.render(window, mouseRect);
         window.display();
     }
+    SDL_DestroyTexture(backroundWin);
+    SDL_DestroyTexture(image);
+    SDL_DestroyTexture(quit.getTex1());
+    SDL_DestroyTexture(quit.getTex2());
+    SDL_DestroyTexture(quitAndSave.getTex1());
+    SDL_DestroyTexture(quitAndSave.getTex2());
+    SDL_DestroyTexture(replayLevel.getTex1());
+    SDL_DestroyTexture(replayLevel.getTex2());
+    SDL_DestroyTexture(replayFromStart.getTex1());
+    SDL_DestroyTexture(replayFromStart.getTex2());
+
     return 0;
 }
 
@@ -454,4 +513,13 @@ void Replay(Render &window, Level levels[], vector<char> movement)
         replay3.render(window, mouseRect);
         window.display();
     }
+    SDL_DestroyTexture(replayTex);
+    SDL_DestroyTexture(replay1.getTex1());
+    SDL_DestroyTexture(replay1.getTex2());
+    SDL_DestroyTexture(replay2.getTex1());
+    SDL_DestroyTexture(replay2.getTex2());
+    SDL_DestroyTexture(replay3.getTex1());
+    SDL_DestroyTexture(replay3.getTex2());
+    SDL_DestroyTexture(quit.getTex1());
+    SDL_DestroyTexture(quit.getTex2());
 }

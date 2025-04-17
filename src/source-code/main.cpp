@@ -137,10 +137,6 @@ int main(int argc, char *args[])
     bool damageTime = false;
     SDL_Rect damageRect = {0, 0, 1920, 1080};
 
-    player_Walking_Forward[1] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f2.png");
-    player_Walking_Forward[2] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f3.png");
-    player_Walking_Forward[3] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f4.png");
-
     SDL_Event event;
     SDL_Rect tempRect;
 
