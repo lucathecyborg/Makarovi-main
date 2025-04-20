@@ -21,56 +21,27 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
     bool menu = true;
     SDL_Event event;
     SDL_Texture *menuTex = window.loadTexture("src/res/dev/main menu.png");
-    SDL_Texture *saveTex = window.loadTexture("src/res/dev/save pressed.png");
-    SDL_Texture *loadTex = window.loadTexture("src/res/dev/load pressed.png");
-    SDL_Texture *playTex = window.loadTexture("src/res/dev/play pressed.png");
-    SDL_Texture *creditsTex = window.loadTexture("src/res/dev/credits pressed.png");
-    SDL_Texture *optionsTex = window.loadTexture("src/res/dev/options pressed.png");
-    SDL_Texture *quitTex = window.loadTexture("src/res/dev/quit pressed.png");
-    SDL_Texture *tutorialTex = window.loadTexture("src/res/dev/tutorial/Tutorial.png");
-    SDL_Texture *tutorialTexPressed = window.loadTexture("src/res/dev/tutorial/tutorial_pressed.png");
-    Button start(771, 380, 378, 86, playTex);
-    Button quit(771, 850, 378, 86, quitTex);
-    Button creditsButton(771, 692, 378, 86, creditsTex);
-    Button optionsButton(771, 540, 378, 86, optionsTex);
-    Button saveButon(177, 540, 378, 86, saveTex);
-    Button loadButon(177, 727, 378, 86, loadTex);
-    Button tutbutton(1364, 540, 378, 86, tutorialTex, tutorialTexPressed);
-    Button clueButton(1364, 727, 378, 86, window.loadTexture("src/res/dev/clue.png"), window.loadTexture("src/res/dev/clue pressed.png"));
-    Button replayV(177, 973, 422, 86, window.loadTexture("src/res/dev/replayV.png"), window.loadTexture("src/res/dev/replayV pressed.png"));
-    Button replayS(177, 850, 380, 86, window.loadTexture("src/res/dev/replayS.png"), window.loadTexture("src/res/dev/replayS pressed.png"));
+
+    Button start(771, 380, 378, 86, window.loadTexture("src/res/dev/play.png"), window.loadTexture("src/res/dev/play pressed.png"));
+    Button quit(771, 850, 378, 86, window.loadTexture("src/res/dev/quit.png"), window.loadTexture("src/res/dev/quit pressed.png"));
+    Button creditsButton(771, 692, 378, 86, window.loadTexture("src/res/dev/credits.png"), window.loadTexture("src/res/dev/credits pressed.png"));
+    Button optionsButton(771, 540, 378, 86, window.loadTexture("src/res/dev/options.png"), window.loadTexture("src/res/dev/options pressed.png"));
+    Button saveButon(135, 423, 378, 86, window.loadTexture("src/res/dev/save.png"), window.loadTexture("src/res/dev/save pressed.png"));
+    Button loadButon(135, 546, 378, 86, window.loadTexture("src/res/dev/load.png"), window.loadTexture("src/res/dev/load pressed.png"));
+    Button tutbutton(1407, 772, 378, 86, window.loadTexture("src/res/dev/tutorial/Tutorial.png"), window.loadTexture("src/res/dev/tutorial/tutorial_pressed.png"));
+    Button clueButton(135, 772, 378, 86, window.loadTexture("src/res/dev/clue.png"), window.loadTexture("src/res/dev/clue pressed.png"));
+    Button replayV(1407, 546, 422, 86, window.loadTexture("src/res/dev/replayV.png"), window.loadTexture("src/res/dev/replayV pressed.png"));
+    Button replayS(1407, 423, 380, 86, window.loadTexture("src/res/dev/replayS.png"), window.loadTexture("src/res/dev/replayS pressed.png"));
     while (menu)
     {
-        window.renderTexture(menuTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
+
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
-        if (SDL_HasIntersection(&mouseRect, start.getHitbox()))
-        {
-            window.renderTexture(playTex, {0, 0, 378, 86}, {771, 380, 378, 86});
-        }
-        else if (SDL_HasIntersection(&mouseRect, quit.getHitbox()))
-        {
-            window.renderTexture(quitTex, {0, 0, 378, 86}, {771, 850, 378, 86});
-        }
-        else if (SDL_HasIntersection(&mouseRect, creditsButton.getHitbox()))
-        {
-            window.renderTexture(creditsTex, {0, 0, 378, 86}, {771, 692, 378, 86});
-        }
-        else if (SDL_HasIntersection(&mouseRect, optionsButton.getHitbox()))
-        {
-            window.renderTexture(optionsTex, {0, 0, 378, 86}, {771, 540, 378, 86});
-        }
-        else if (SDL_HasIntersection(&mouseRect, saveButon.getHitbox()))
-        {
-            window.renderTexture(saveTex, {0, 0, 378, 86}, {177, 540, 378, 86});
-        }
-        else if (SDL_HasIntersection(&mouseRect, loadButon.getHitbox()))
-        {
-            window.renderTexture(loadTex, {0, 0, 378, 86}, {177, 727, 378, 86});
-        }
+        window.renderTexture(menuTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
         while (SDL_PollEvent(&event))
         {
+
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                 if (event.button.button == SDL_BUTTON_LEFT)
@@ -88,8 +59,7 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                     }
                     else if (SDL_HasIntersection(&mouseRect, creditsButton.getHitbox()))
                     {
-                        // credits(window);
-                        Replay(window, levels, movement);
+                        credits(window);
                     }
                     else if (SDL_HasIntersection(&mouseRect, optionsButton.getHitbox()))
                     {
@@ -150,6 +120,13 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                 }
             }
         }
+
+        start.render(window, mouseRect);
+        quit.render(window, mouseRect);
+        creditsButton.render(window, mouseRect);
+        optionsButton.render(window, mouseRect);
+        saveButon.render(window, mouseRect);
+        loadButon.render(window, mouseRect);
         clueButton.render(window, mouseRect);
         tutbutton.render(window, mouseRect);
         replayS.render(window, mouseRect);
@@ -158,14 +135,18 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
         window.clear();
     }
     SDL_DestroyTexture(menuTex);
-    SDL_DestroyTexture(saveTex);
-    SDL_DestroyTexture(loadTex);
-    SDL_DestroyTexture(playTex);
-    SDL_DestroyTexture(creditsTex);
-    SDL_DestroyTexture(optionsTex);
-    SDL_DestroyTexture(quitTex);
-    SDL_DestroyTexture(tutorialTex);
-    SDL_DestroyTexture(tutorialTexPressed);
+    SDL_DestroyTexture(start.getTex1());
+    SDL_DestroyTexture(start.getTex2());
+    SDL_DestroyTexture(quit.getTex1());
+    SDL_DestroyTexture(quit.getTex2());
+    SDL_DestroyTexture(creditsButton.getTex1());
+    SDL_DestroyTexture(creditsButton.getTex2());
+    SDL_DestroyTexture(optionsButton.getTex1());
+    SDL_DestroyTexture(optionsButton.getTex2());
+    SDL_DestroyTexture(saveButon.getTex1());
+    SDL_DestroyTexture(saveButon.getTex2());
+    SDL_DestroyTexture(loadButon.getTex1());
+    SDL_DestroyTexture(loadButon.getTex2());
     SDL_DestroyTexture(clueButton.getTex1());
     SDL_DestroyTexture(clueButton.getTex2());
     SDL_DestroyTexture(tutbutton.getTex1());
@@ -174,12 +155,6 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
     SDL_DestroyTexture(replayS.getTex2());
     SDL_DestroyTexture(replayV.getTex1());
     SDL_DestroyTexture(replayV.getTex2());
-    SDL_DestroyTexture(start.getTex1());
-    SDL_DestroyTexture(quit.getTex1());
-    SDL_DestroyTexture(creditsButton.getTex1());
-    SDL_DestroyTexture(optionsButton.getTex1());
-    SDL_DestroyTexture(saveButon.getTex1());
-    SDL_DestroyTexture(loadButon.getTex1());
 
     return levelNumber;
 }
@@ -189,20 +164,14 @@ void credits(Render &window)
 
     bool credits = true;
     SDL_Event event;
-    SDL_Texture *quitTex = window.loadTexture("src/res/dev/quit pressed3.png");
-    Button back(1507, 960, 378, 86, quitTex);
-    SDL_Texture *creditsTex = window.loadTexture("src/res/dev/credits.png");
+    Button back(1507, 960, 378, 86, window.loadTexture("src/res/dev/quit3.png"), window.loadTexture("src/res/dev/quit pressed3.png"));
+    SDL_Texture *creditsTex = window.loadTexture("src/res/dev/creditsScreen.png");
     while (credits)
     {
         window.renderTexture(creditsTex, {0, 0, 1920, 1080}, {0, 0, 1920, 1080});
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
-        if (SDL_HasIntersection(back.getHitbox(), &mouseRect))
-        {
-            window.renderTexture(quitTex, {0, 0, 378, 86}, {1507, 960, 378, 86});
-        }
-
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_KEYUP)
@@ -225,13 +194,14 @@ void credits(Render &window)
                 credits = false;
             }
         }
-
+        back.render(window, mouseRect);
         window.display();
         window.clear();
     }
-    SDL_DestroyTexture(quitTex);
+
     SDL_DestroyTexture(creditsTex);
     SDL_DestroyTexture(back.getTex1());
+    SDL_DestroyTexture(back.getTex2());
 }
 
 void options(Render &window)
@@ -239,9 +209,8 @@ void options(Render &window)
     bool options = true;
     SDL_Event event;
     float brightness = 0;
-    SDL_Texture *buttonTex = window.loadTexture("src/res/dev/quit pressed2.png");
-    Button back(1506, 979, 378, 86, buttonTex);
-    SDL_Texture *optionsTex = window.loadTexture("src/res/dev/options.png");
+    Button back(1506, 979, 378, 86, window.loadTexture("src/res/dev/quit2.png"), window.loadTexture("src/res/dev/quit pressed2.png"));
+    SDL_Texture *optionsTex = window.loadTexture("src/res/dev/optionsScreen.png");
 
     while (options)
     {
@@ -249,12 +218,6 @@ void options(Render &window)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
         SDL_Rect mouseRect = {mouseX, mouseY, 1, 1};
-
-        if (SDL_HasIntersection(back.getHitbox(), &mouseRect))
-        {
-            window.renderTexture(buttonTex, {0, 0, 378, 86}, {1506, 979, 378, 86});
-        }
-
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_KEYUP)
@@ -304,13 +267,14 @@ void options(Render &window)
                 }
             }
         }
-
+        back.render(window, mouseRect);
         window.display();
         window.clear();
     }
-    SDL_DestroyTexture(buttonTex);
+
     SDL_DestroyTexture(optionsTex);
     SDL_DestroyTexture(back.getTex1());
+    SDL_DestroyTexture(back.getTex2());
 }
 
 void tutorial(Render &window)
