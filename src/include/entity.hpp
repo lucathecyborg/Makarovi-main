@@ -1,7 +1,8 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <fstream>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include "Render.hpp"
 #include "levels.hpp"
 
@@ -52,6 +53,7 @@ private:
     Text answers;
     TTF_Font *font = TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 70);
     TTF_Font *answerFont = TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 70);
+    Mix_Chunk *clueSound = Mix_LoadWAV("src/res/sounds/clueSound.wav");
     SDL_Texture *answerTex;
     SDL_Color textColor = {0, 0, 0, 255};
     Render window1;

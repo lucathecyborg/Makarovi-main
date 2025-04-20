@@ -129,11 +129,13 @@ void Clue::solve(Level &currentLevel)
     bool solveRunning = true;
     bool text = false;
     std::cout << clueType << std::endl;
+    Mix_PlayChannel(-1, clueSound, 0);
     while (solveRunning)
     {
         if (clueType == "clue")
         {
             clue.renderText(0, 0);
+
             window1.display();
 
             while (SDL_PollEvent(&event))
@@ -211,6 +213,7 @@ void Clue::solve(Level &currentLevel)
                 answer.clear();
                 window1.clear();
                 currentLevel.render(); // Render the background
+                Mix_PlayChannel(-1, clueSound, 0);
                 displayClueText(window1, clueText);
             }
             else
