@@ -71,14 +71,6 @@ int main(int argc, char *args[])
     player_Walking_Forward[2] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f3.png");
     player_Walking_Forward[3] = window.loadTexture("src/res/gfx/ppl_textures/player/moving forward/moving f4.png");
 
-    SDL_Texture *clueDist[6];
-    clueDist[0] = window.loadTexture("src/res/gfx/signal0.png");
-    clueDist[1] = window.loadTexture("src/res/gfx/signal1.png");
-    clueDist[2] = window.loadTexture("src/res/gfx/signal2.png");
-    clueDist[3] = window.loadTexture("src/res/gfx/signal3.png");
-    clueDist[4] = window.loadTexture("src/res/gfx/signal4.png");
-    clueDist[5] = window.loadTexture("src/res/gfx/signal_full.png");
-
     Entity player(960, 540, player_Walking_Forward[4], true);
 
     SDL_Texture *map3Tex = window.loadTexture("src/res/dev/map3.png");
@@ -108,6 +100,13 @@ int main(int argc, char *args[])
     bool win = false;
     bool playersetup1;
 
+    SDL_Texture *clueDist[6];
+    clueDist[0] = window.loadTexture("src/res/gfx/signal0.png");
+    clueDist[1] = window.loadTexture("src/res/gfx/signal1.png");
+    clueDist[2] = window.loadTexture("src/res/gfx/signal2.png");
+    clueDist[3] = window.loadTexture("src/res/gfx/signal3.png");
+    clueDist[4] = window.loadTexture("src/res/gfx/signal4.png");
+    clueDist[5] = window.loadTexture("src/res/gfx/signal_full.png");
     int lastPunchTime = 0;
 
     int redCooldown = 0;
@@ -431,6 +430,31 @@ int main(int argc, char *args[])
     }
 
 Finish:
+    SDL_DestroyTexture(player_Walking_Forward[0]);
+    SDL_DestroyTexture(player_Walking_Forward[1]);
+    SDL_DestroyTexture(player_Walking_Forward[2]);
+    SDL_DestroyTexture(player_Walking_Forward[3]);
+    SDL_DestroyTexture(player_Walking_Backward[0]);
+    SDL_DestroyTexture(player_Walking_Backward[1]);
+    SDL_DestroyTexture(player_Walking_Backward[2]);
+    SDL_DestroyTexture(player_Walking_Backward[3]);
+    SDL_DestroyTexture(map1Tex);
+    SDL_DestroyTexture(map2Tex);
+    SDL_DestroyTexture(map3Tex);
+    SDL_DestroyTexture(startup1);
+    SDL_DestroyTexture(startup2);
+    SDL_DestroyTexture(startup3);
+    SDL_DestroyTexture(gateClosed);
+    SDL_DestroyTexture(gateOpen);
+    SDL_DestroyTexture(jailTexO);
+    SDL_DestroyTexture(jailTexC);
+    SDL_DestroyTexture(exclamationTex);
+    SDL_DestroyTexture(clueDist[0]);
+    SDL_DestroyTexture(clueDist[1]);
+    SDL_DestroyTexture(clueDist[2]);
+    SDL_DestroyTexture(clueDist[3]);
+    SDL_DestroyTexture(clueDist[4]);
+    SDL_DestroyTexture(clueDist[5]);
 
     Quit(window);
 
