@@ -165,7 +165,7 @@ int main(int argc, char *args[])
     {
         uint32_t currentFrameTime = SDL_GetTicks();
         frameCount++;
-
+        bool moved = false;
         // Calculate FPS every second
         if (currentFrameTime - fpsTimer >= 1000)
         {
@@ -192,6 +192,7 @@ int main(int argc, char *args[])
             if (moveUp && levels[level_counter].getSrcRect().y - levels[level_counter].getSpeed() >= 0)
             {
                 playerMovement.push_back('u');
+                moved = true;
                 levels[level_counter].moveAll(0, levels[level_counter].getSpeed());
 
                 lastMove.Up = true;
@@ -211,6 +212,7 @@ int main(int argc, char *args[])
             if (moveDown && levels[level_counter].getSrcRect().y + levels[level_counter].getSpeed() <= levels[level_counter].getY() - 1180)
             {
                 playerMovement.push_back('d');
+                moved = true;
                 levels[level_counter].moveAll(0, -levels[level_counter].getSpeed());
                 lastMove.Down = true;
                 if (ticks - Current_ticks >= animation_time)
@@ -229,6 +231,7 @@ int main(int argc, char *args[])
             if (moveLeft && levels[level_counter].getSrcRect().x - levels[level_counter].getSpeed() >= 0)
             {
                 playerMovement.push_back('l');
+                moved = true;
                 levels[level_counter].moveAll(levels[level_counter].getSpeed(), 0);
                 lastMove.Left = true;
             }
@@ -240,12 +243,14 @@ int main(int argc, char *args[])
             if (moveRight && levels[level_counter].getSrcRect().x + levels[level_counter].getSpeed() <= levels[level_counter].getX() - 2020)
             {
                 playerMovement.push_back('r');
+                moved = true;
                 levels[level_counter].moveAll(-levels[level_counter].getSpeed(), 0);
                 lastMove.Right = true;
             }
         }
         // END OF MOVEMENT ------------------------------------------------------------------------------------------------------------------------------------------------
-
+        if (!moved)
+            playerMovement.push_back(' ');
         enemyAI(levels[level_counter].getEnemies(), levels[level_counter].getEnemyNumber(), levels, level_counter, levels[level_counter].getModifier());
         if (ticks - healtime > 200)
         {

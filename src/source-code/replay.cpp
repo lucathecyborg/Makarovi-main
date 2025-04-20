@@ -53,7 +53,7 @@ void playReplay(Level &level, vector<char> movement, Render &window)
             }
         }
 
-        if (data >> move)
+        if (data >> noskipws >> move)
         {
 
             if (move == 'u')
@@ -71,6 +71,9 @@ void playReplay(Level &level, vector<char> movement, Render &window)
             else if (move == 'r')
             {
                 tempRect.x += speed;
+            }
+            else if (move == ' ')
+            {
             }
 
             else if (move == 'x' || move == 'n' || move == 'w')

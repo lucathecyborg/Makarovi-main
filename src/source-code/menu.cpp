@@ -102,6 +102,12 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
                     else if (SDL_HasIntersection(&mouseRect, replayS.getHitbox()))
                     {
                         saveReplay(levels[levelNumber], movement);
+                        TTF_Font *Savefont = TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 140);
+                        Text saveText(window.getRenderer(), {255, 0, 0, 255}, Savefont, "Replay Saved", 500, 500, 400, 1000, {0, 0, 0, 255});
+                        saveText.renderText(450, 300);
+                        window.display();
+                        SDL_Delay(2000);
+                        TTF_CloseFont(Savefont);
                     }
                 }
             }
