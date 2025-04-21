@@ -8,18 +8,14 @@
 #include "Player.hpp"
 #include "button.hpp"
 
-Button::Button(int x, int y, int w1, int h1, SDL_Texture *tex1)
-{
-    tex = tex1;
-    hitbox = {x, y, w1, h1};
-}
+// Konstruktor
 Button::Button(int x, int y, int w1, int h1, SDL_Texture *tex1, SDL_Texture *tex2)
 {
     tex = tex1;
     pressedTex = tex2;
     hitbox = {x, y, w1, h1};
 }
-
+// rendering
 void Button::render(Render &window, SDL_Rect mouseRect)
 {
     if (SDL_HasIntersection(&mouseRect, &hitbox))

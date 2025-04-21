@@ -14,11 +14,14 @@
 #include "button.hpp"
 #include "levels.hpp"
 
+// Definiranje statičnih lastnosti
 Player Level::player1 = Player();
 Mix_Chunk *Level::gate_sound = nullptr;
 int Level::MovementSpeed = 0;
 int Level::modifier = 0;
 
+// Nastavljanje hitrosti igralca in nasprotnikov glede na hitrost zaslona
+// MovementSpeed je za igralca, modifier za enemies
 void Level::setSpeed()
 {
     SDL_DisplayMode displayMode;
@@ -49,6 +52,7 @@ void Level::setSpeed()
     }
 }
 
+// Konstruktor
 Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumber, Render window, SDL_Texture *Tex, SDL_Texture *start1, SDL_Texture *gateC, SDL_Texture *gateO, Mix_Music *level_music1)
 {
     mapTex = Tex;
@@ -68,8 +72,6 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     }
     clueRoomTex = window.loadTexture("src/res/dev/clues.png");
 
-    // Initialize srcRect and dstRect after setting sizeX and sizeY
-
     srcRect = {(sizeX - 1920) / 2, (sizeY - 1080) / 2, 1920, 1080};
     dstRect = {0, 0, 1920, 1080};
     createWalls();
@@ -78,6 +80,7 @@ Level::Level(int levelNumber, int sizeX, int sizeY, int enemyType, int enemyNumb
     createHealthpacks();
 }
 
+// Funkcija za prikazovanje vseh lasnosti levela (igralec, mapa, nasprotniki, uganke, ograja, itd...)
 void Level::render()
 {
     window.renderTexture(mapTex, srcRect, dstRect);
@@ -109,6 +112,7 @@ void Level::render()
     window.renderPlayer(player1.getPlayer1());
 }
 
+// Kliče se ob ustvarjanju levela, ustvari vse nasprotnike na posameznem levelu na naključnih pozicijah
 void Level::createEnemies()
 {
     SDL_Rect enemyTempRect;
@@ -169,6 +173,7 @@ vector<SDL_Rect> &Level::getWalls()
     return walls;
 }
 
+// Funkcija resetira level na prvotno stanje, še enkrat naključno ustvari nasportnike
 void Level::resetLevel()
 {
 
@@ -190,6 +195,7 @@ void Level::resetLevel()
     levelComplete = false;
 }
 
+// Uporabljen za premik vseh stvari na posameznem levelu glede na igralca
 void Level::moveAll(int x, int y)
 {
     for (int i = 0; i < walls.size(); i++)
@@ -228,6 +234,7 @@ void Level::moveAll(int x, int y)
     srcRect.y -= y;
 }
 
+// Preverjanje trk igralca s steno/ograjo
 bool Level::checkCollision(SDL_Rect *playerHitbox)
 {
     for (int i = 0; i < walls.size(); i++)
@@ -243,6 +250,8 @@ bool Level::checkCollision(SDL_Rect *playerHitbox)
     }
     return false;
 }
+
+// Preverjanje trk igralca s healthPack
 bool Level::checkHeal(SDL_Rect *playerRect)
 {
     for (int i = 0; i < healthPacks.size(); i++)
@@ -261,6 +270,7 @@ bool Level::checkHeal(SDL_Rect *playerRect)
     return false;
 }
 
+// Kliče se ob ustvarjanju levela, naredi vse potrebne zide, deathBarriers in ograje na levelu
 void Level::createWalls()
 {
     if (levelNumber == 1)
@@ -350,6 +360,7 @@ void Level::createWalls()
     }
 }
 
+// Preveri trk igralca s deathBarrier
 bool Level::checkDeathCollision(SDL_Rect *playerHitbox)
 {
     for (int i = 0; i < deathBarriers.size(); i++)
@@ -362,6 +373,7 @@ bool Level::checkDeathCollision(SDL_Rect *playerHitbox)
     return true;
 }
 
+// Kliče se pri premiku in ustvarjanju nasprotnikov, pove če se nasprotnik dotika stene
 bool Level::enemyCheckCollision(SDL_Rect *enemyHitbox)
 {
     for (int i = 0; i < walls.size(); i++)
@@ -380,9 +392,11 @@ bool Level::enemyCheckCollision(SDL_Rect *enemyHitbox)
         }
     }
 
-    return false; // No collision
+    return false;
 }
 
+// Pogleda če je level končan (vsi nasprotniki mrtvi in vse uganke rešene)
+// Če je rešen, se odpre ograja do nasljendjega levela
 bool Level::checkComplete()
 {
     levelComplete = true;
@@ -412,6 +426,7 @@ bool Level::checkComplete()
     return levelComplete;
 }
 
+// Klliče ob ustvarjanju levela, ustvari vse potrebne uganke
 void Level::createClues()
 {
     if (levelNumber == 1)
@@ -462,6 +477,7 @@ void Level::createClues()
     }
 }
 
+// Kliče ob ustvarjanju levela, naredi vse potrebne healthPacks
 void Level::createHealthpacks()
 {
     SDL_Rect tempRect;
@@ -496,6 +512,7 @@ void Level::createHealthpacks()
     }
 }
 
+// Preveri trk igralca s uganko, če je trk jo začne reševat
 bool Level::checkClues(Entity *player1)
 {
 
@@ -512,6 +529,7 @@ bool Level::checkClues(Entity *player1)
     return true;
 }
 
+// Prikaz začetne slike in opisa levela
 void Level::start()
 {
     Mix_FadeOutMusic(1000);
@@ -549,6 +567,7 @@ SDL_Rect &Level::getgateRect()
     }
 }
 
+// Poišče najbližjo uganko in vrne število glede na to kako blizu je igralcu, uporabljen za detektor ugank
 int Level::clueDistance()
 {
     int closest = 0;
@@ -583,6 +602,7 @@ int Level::clueDistance()
     return closest;
 }
 
+// Ustvarjanje statičnih lastnosti
 void Level::loadPlayer(Entity &x)
 {
     Player temp(&x);
@@ -599,6 +619,7 @@ vector<Clue> &Level::getClues()
     return clues;
 }
 
+// Nalaganje levela iz shranjene binarne datoteke
 void Level::loadFromFile(Render &window)
 {
     SDL_Texture *skins[3];
@@ -613,13 +634,14 @@ void Level::loadFromFile(Render &window)
         return;
     }
 
-    // Read the level number
+    // LevelNumber
     inFile.read(reinterpret_cast<char *>(&levelNumber), sizeof(levelNumber));
 
-    // Read clue states
+    // število ugank
     size_t clueSize;
     inFile.read(reinterpret_cast<char *>(&clueSize), sizeof(clueSize));
 
+    // stanje ugank (rešeno/nerešeno)
     std::vector<uint8_t> clueData(clueSize);
     inFile.read(reinterpret_cast<char *>(clueData.data()), clueSize);
 
@@ -629,7 +651,7 @@ void Level::loadFromFile(Render &window)
         clueStates[i] = (clueData[i] != 0); // Convert byte to bool
     }
 
-    // Read enemy alive states
+    // število živih nasportnikov
     size_t enemySize;
     inFile.read(reinterpret_cast<char *>(&enemySize), sizeof(enemySize));
 
@@ -642,14 +664,14 @@ void Level::loadFromFile(Render &window)
         enemyStates[i] = (enemyData[i] != 0); // Convert byte to bool
     }
 
-    // Read player health
+    // Življenje igralca
     int helt;
     inFile.read(reinterpret_cast<char *>(&helt), sizeof(helt));
     player1.setHealth(helt);
 
     inFile.close();
 
-    // Apply loaded data
+    // Zastavljanje naloženih vrednosti
     for (size_t i = 0; i < clues.size() && i < clueStates.size(); i++)
     {
         clues[i].setAlive(clueStates[i]);
@@ -661,6 +683,7 @@ void Level::loadFromFile(Render &window)
     }
 }
 
+// Shranjenje trenutnega levela v binarno datoteko
 void Level::saveToFile()
 {
     std::ofstream outFile("level.bin", std::ios::binary);
@@ -670,15 +693,15 @@ void Level::saveToFile()
         return;
     }
 
-    // Save the level number
+    // LevelNumber
     outFile.write(reinterpret_cast<const char *>(&levelNumber), sizeof(levelNumber));
 
-    // Save the clue data
     std::vector<bool> clueStates;
     for (size_t i = 0; i < clues.size(); i++)
     {
         clueStates.push_back(clues[i].Alive());
     }
+    // Vpisovanje ugank
     size_t clueSize = clueStates.size();
     outFile.write(reinterpret_cast<const char *>(&clueSize), sizeof(clueSize));
 
@@ -689,7 +712,7 @@ void Level::saveToFile()
     }
     outFile.write(reinterpret_cast<const char *>(clueData.data()), clueSize);
 
-    // Save the enemy alive states
+    // Vpisovanje nasprotnikov
     std::vector<bool> enemyStates;
     for (size_t i = 0; i < enemies.size(); i++)
     {
@@ -705,7 +728,7 @@ void Level::saveToFile()
     }
     outFile.write(reinterpret_cast<const char *>(enemyData.data()), enemySize);
 
-    // Save player health
+    // Življenje igralca
     int helt = player1.getHealth();
     outFile.write(reinterpret_cast<const char *>(&helt), sizeof(helt));
 
@@ -713,6 +736,7 @@ void Level::saveToFile()
     std::cout << "Level saved successfully!" << std::endl;
 }
 
+// Preveri številko levela iz binarne datoteke in jo vrne
 int Level::numberCheck()
 {
     std::ifstream inFile("level.bin", std::ios::binary);
@@ -722,16 +746,15 @@ int Level::numberCheck()
         return -1;
     }
 
-    // Read the level number into a temporary variable
     int tempLevelNumber;
     inFile.read(reinterpret_cast<char *>(&tempLevelNumber), sizeof(tempLevelNumber));
 
     inFile.close();
 
-    // Return the temporary level number
     return tempLevelNumber;
 }
 
+// Prikazovanje števca nerešeniih ugank ter živih nasprotnikov
 void Level::renderCounter(Render &window)
 {
     int enemiesLeft = 0;
@@ -758,6 +781,7 @@ void Level::renderCounter(Render &window)
     clueText.renderText(0, 60);
 }
 
+// Funkcija za prikaz vseh rešenih ugank v pravilnem vrstnem redu
 void Level::clueRoom(Render &window)
 {
     bool running = true;
@@ -810,6 +834,7 @@ void Level::clueRoom(Render &window)
     }
 }
 
+// Funkcije za glasbo
 void Level::play()
 {
     Mix_FadeInMusic(level_music, -1, 5000);

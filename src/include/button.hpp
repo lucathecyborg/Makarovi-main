@@ -13,7 +13,6 @@ class Button
     SDL_Texture *pressedTex;
 
 public:
-    Button(int x, int y, int w1, int h1, SDL_Texture *tex1);
     Button(int x, int y, int w1, int h1, SDL_Texture *tex1, SDL_Texture *tex2);
     SDL_Rect *getHitbox();
     void render(Render &window, SDL_Rect mouseRect);

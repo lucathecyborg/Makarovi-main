@@ -8,6 +8,8 @@
 #include "inputANDenemyAI.hpp"
 #include "levels.hpp"
 
+// Funkcije za entities
+
 float const Entity::getX()
 {
     return x;
@@ -33,6 +35,7 @@ SDL_Texture *Entity::getTex()
     return tex;
 }
 
+// Konstruktor
 Entity::Entity(float p_x, float p_y, SDL_Texture *p_tex, bool life)
     : x(p_x), y(p_y), tex(p_tex)
 {
@@ -45,8 +48,10 @@ void Entity::setTex(SDL_Texture *p_tex)
     tex = p_tex;
 }
 
+// Default konstruktor
 Entity::Entity() {};
 
+// Premakne entity na podano mesto
 void Entity::Move(float x1, float y1)
 {
     prevX = x;
@@ -57,6 +62,7 @@ void Entity::Move(float x1, float y1)
     this->hitbox.y = static_cast<int>(y1);
 }
 
+// Vrne true/false če je entity s podanim X in Y v krogu s polmerom "radius" okoli igralca
 bool Entity::Circle(float X, float Y, int radius)
 {
     int DeltaX = X - 940;
@@ -65,6 +71,8 @@ bool Entity::Circle(float X, float Y, int radius)
     return SqaureDistance <= radius * radius;
 }
 
+// Vrne struct CirclePos (pove pozicijo entity odvisno od igralca), če je entity s podanimi X in Y v krogu okoli igralca.
+// Uporabljen skupaj s Entity::Circle za enemyAI
 CirclePos Entity::CheckLocation(float X, float Y, int radi)
 {
     CirclePos pos = {false, false, false, false};
@@ -107,6 +115,9 @@ void Entity::setAlive(bool status)
     alive = status;
 }
 
+// Funkcije za uganke
+
+// Konstruktor
 Clue::Clue(float p_x, float p_y, bool life, Render &window)
 {
     x = p_x;
@@ -123,6 +134,7 @@ bool const Clue::getSolved()
     return solved;
 }
 
+// Reševanje uganke, glede na tip (uganka ali uprašanje)
 void Clue::solve(Level &currentLevel)
 {
     SDL_Event event;
@@ -132,6 +144,7 @@ void Clue::solve(Level &currentLevel)
     Mix_PlayChannel(-1, clueSound, 0);
     while (solveRunning)
     {
+        // Pokaže uganko dokler ne pritisneš enter
         if (clueType == "clue")
         {
             clue.renderText(0, 0);
@@ -152,6 +165,7 @@ void Clue::solve(Level &currentLevel)
         }
         else if (clueType == "question")
         {
+            // Prikazuje uprašanje ter omogoča vpis odgovora
             clue.renderText(0, 0);
             window1.renderTexture1(answerTex, {640, 799, 700, 220});
             text = true;
@@ -189,30 +203,31 @@ void Clue::solve(Level &currentLevel)
                         break;
                     }
                 }
-                // Clear the window, render the background, and re-render text and answerTex
                 window1.clear();
-                currentLevel.render();                                   // Render the background
-                clue.renderText(0, 0);                                   // Render the question text
-                answers.setText(answer);                                 // Update the inputted text
-                window1.renderTexture1(answerTex, {640, 799, 700, 220}); // Render the answer box
-                answers.renderText(673, 858);                            // Render the inputted text
+                currentLevel.render();
+                clue.renderText(0, 0);
+                answers.setText(answer);
+                window1.renderTexture1(answerTex, {640, 799, 700, 220});
+                answers.renderText(673, 858);
                 window1.display();
             }
 
             if (answer != odgovor)
             {
+                // Če napačno uganeš ti izbriše odgovor in resetira
                 answer.clear();
                 text = true;
                 goto input;
             }
             else if (answer == odgovor)
             {
+                // Če pravilno uganeš ti pokaže nasljedjo uganko ter zaigra zvok
                 text = false;
                 solveRunning = false;
                 solved = true;
                 answer.clear();
                 window1.clear();
-                currentLevel.render(); // Render the background
+                currentLevel.render();
                 Mix_PlayChannel(-1, clueSound, 0);
                 displayClueText(window1, clueText);
             }
@@ -226,6 +241,8 @@ void Clue::solve(Level &currentLevel)
     }
 }
 
+// Prikaže uganko, dokler ne pritisneš enter ali space
+// uporabljen za uganke tipa uprašaja
 void Clue::displayClueText(Render &window, string text)
 {
     Text clue1(window.getRenderer(), textColor, answerFont, text, 0, 0, 300, 900, 900);
@@ -248,6 +265,7 @@ void Clue::displayClueText(Render &window, string text)
     }
 }
 
+// Naredi uganko tipa uganka
 void Clue::SetClueType(string type, string text)
 {
     clueType = type;
@@ -256,6 +274,7 @@ void Clue::SetClueType(string type, string text)
     clue = clue1;
 }
 
+// Naredi ugano tipa uprašanje, dopiše še pravilni odgovor ter dejansko uganko
 void Clue::SetClueType(string type, string question, string odgovor1, string text)
 {
     odgovor = odgovor1;

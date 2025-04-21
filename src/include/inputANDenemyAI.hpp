@@ -17,4 +17,4 @@ void gameOver(Render window, TTF_Font *font, bool win);
 
 void Quit(Render window);
 
-void writeText(Render window);
+// void writeText(Render window);
