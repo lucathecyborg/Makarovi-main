@@ -5,10 +5,13 @@
 #include <vector>
 using namespace std;
 #include "Render.hpp"
-#include "Entity.hpp" // Include the header for Entity class
+#include "Entity.hpp"
+
+// Funkcije za Renderer
 
 Render::Render() {}
 
+// Konstruktor, ustvari renderer pa naštima nastavitve ekrana
 Render::Render(const char *p_title, int p_w, int p_h)
 
 {
@@ -19,7 +22,6 @@ Render::Render(const char *p_title, int p_w, int p_h)
         return;
     }
 
-    // Get the native screen resolution in pixels
     int nativeWidth = dm.w;
     int nativeHeight = dm.h;
 
@@ -40,6 +42,7 @@ Render::Render(const char *p_title, int p_w, int p_h)
     }
 }
 
+// General cleanup ob zaključku igre
 void Render::cleanUp()
 {
     SDL_DestroyRenderer(renderer);
@@ -50,25 +53,31 @@ void Render::cleanUp()
     SDL_Quit();
 }
 
+// Čistenje ekrana
 void Render::clear()
 {
     SDL_RenderClear(renderer);
 }
 
+// Prikaz
 void Render::display()
 {
     SDL_RenderPresent(renderer);
 }
 
+// Prikazovanje točnega dela teksture
 void Render::renderTexture(SDL_Texture *p_tex, SDL_Rect srcRect, SDL_Rect dstRect)
 {
     SDL_RenderCopy(renderer, p_tex, &srcRect, &dstRect);
 }
+
+// Prikazovajne cele teksture
 void Render::renderTexture1(SDL_Texture *p_tex, SDL_Rect dstRect)
 {
     SDL_RenderCopy(renderer, p_tex, NULL, &dstRect);
 }
 
+// Ustvarjanje teksture
 SDL_Texture *Render::loadTexture(const char *p_filePath)
 {
     SDL_Texture *texture = NULL;
@@ -80,6 +89,7 @@ SDL_Texture *Render::loadTexture(const char *p_filePath)
     return texture;
 }
 
+// Prikazovanje entity, samo če je živ
 void Render::renderEntity(Entity entity, int x, int y, int w, int h, bool alive)
 {
     if (alive == false)
@@ -95,6 +105,7 @@ void Render::renderEntity(Entity entity, int x, int y, int w, int h, bool alive)
     SDL_RenderCopy(renderer, entity.getTex(), NULL, &dst);
 }
 
+// prikazovanje igralca
 void Render::renderPlayer(Entity *player1)
 {
     SDL_Rect dst;
@@ -106,6 +117,9 @@ void Render::renderPlayer(Entity *player1)
     SDL_RenderCopy(renderer, player1->getTex(), NULL, &dst);
 }
 
+// Funkcije za tekst
+
+// Konstruktor za Blended text
 Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string text1, int x1, int y1, int h1, int w1)
 {
     renderer = renderer1;
@@ -122,6 +136,7 @@ Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string te
     SDL_FreeSurface(textSurface);
 }
 
+// Konstruktor za Shaded text
 Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string text1, int x1, int y1, int h1, int w1, SDL_Color color2)
 {
     renderer = renderer1;
@@ -138,6 +153,7 @@ Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string te
     SDL_FreeSurface(textSurface);
 }
 
+// Prikazovanje teksta
 void Text::renderText(int screenWidth, int screenHeight)
 {
     renderQuad.x = screenWidth;
@@ -145,13 +161,15 @@ void Text::renderText(int screenWidth, int screenHeight)
     SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
 }
 
+// Prikazovanje teksta desno zgoraj
 void Text::renderText1(int screenWidth, int screenHeight)
 {
-    renderQuad.x = screenWidth - renderQuad.w; // Position text in the top-right corner
-    renderQuad.y = 0;                          // Position text at the top
+    renderQuad.x = screenWidth - renderQuad.w;
+    renderQuad.y = 0;
     SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
 }
 
+// Spreminjanje blended teksta
 void Text::setText(string text1)
 {
     text = text1;
@@ -160,6 +178,8 @@ void Text::setText(string text1)
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_FreeSurface(textSurface);
 }
+
+// Spreminjanje shaded teksta
 void Text::setText(string text1, SDL_Color color1)
 {
     text = text1;
@@ -169,6 +189,7 @@ void Text::setText(string text1, SDL_Color color1)
     SDL_FreeSurface(textSurface);
 }
 
+// Spreminjanje shaded_wrapped teksta
 void Text::setText(string text1, int blend)
 {
     text = text1;
@@ -178,6 +199,7 @@ void Text::setText(string text1, int blend)
     SDL_FreeSurface(textSurface);
 }
 
+// Konstruktor za shaded_wrapped tekst
 Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string text1, int x1, int y1, int h1, int w1, int blend)
 {
     renderer = renderer1;
@@ -192,11 +214,4 @@ Text::Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string te
     textSurface = TTF_RenderText_Shaded_Wrapped(font, text.c_str(), textColor, {176, 124, 1, 255}, blend);
     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_FreeSurface(textSurface);
-}
-
-void Text::clearText()
-{
-    SDL_SetRenderDrawColor(renderer, 144, 97, 10, 255);
-    SDL_Rect clearRect = {x, y, w, h};
-    SDL_RenderFillRect(renderer, &clearRect);
 }

@@ -16,6 +16,7 @@
 
 int main(int argc, char *args[])
 {
+    // Inicializacija knjižnjic
     if (SDL_Init(SDL_INIT_EVERYTHING) > 0)
     {
         std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
@@ -40,6 +41,7 @@ int main(int argc, char *args[])
         return -1;
     }
 
+    // Sounds
     Mix_Music *menuMusic = Mix_LoadMUS("src/res/sounds/menu.mp3");
     if (!menuMusic)
     {
@@ -53,6 +55,7 @@ int main(int argc, char *args[])
     Mix_Chunk *damageSound = Mix_LoadWAV("src/res/sounds/damage.wav");
     Mix_Chunk *punchSound = Mix_LoadWAV("src/res/sounds/punch.wav");
 
+    // Ustvarimo okno, loading screen ter ustvarimo potrebne spremenljivke
     Render window("Johnny Englishhh", 1920, 1080);
     window.renderTexture1(window.loadTexture("src/res/dev/loading.png"), {0, 0, 1920, 1080});
     window.display();
@@ -87,13 +90,16 @@ int main(int argc, char *args[])
     SDL_Texture *jailTexO = window.loadTexture("src/res/dev/jailOpen.png");
     SDL_Texture *jailTexC = window.loadTexture("src/res/dev/jailClosed.png");
 
+    // Ustvarimo levele, igralca, izberemo hitrost, ter kličemo prvi meni
     Level levels[3] = {Level(1, 4668, 2626, 1, 5, window, map1Tex, startup1, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/desert level.mp3")), Level(2, 6966, 3918, 2, 15, window, map2Tex, startup2, gateClosed, gateOpen, Mix_LoadMUS("src/res/sounds/jungle.mp3")), Level(3, 8120, 4567, 3, 20, window, map3Tex, startup3, jailTexC, jailTexO, Mix_LoadMUS("src/res/sounds/city.mp3"))};
     levels[0].loadPlayer(player);
     levels[0].setSpeed();
     int level_counter = 0;
     bool gameRunning = true;
     window.clear();
-    vector<char> playerMovement;
+
+    // Pripravimo za igro
+    vector<char> playerMovement; // bo vsebovala vse premike
     level_counter = menu(window, levels, level_counter, playerMovement);
     Mix_HaltMusic();
     std::cout << level_counter << std::endl;
@@ -112,6 +118,7 @@ int main(int argc, char *args[])
     int redCooldown = 0;
     int selection;
 
+    // Setup animacija
     if (gameRunning)
         playersetup1 = playerSetup(player, levels[level_counter].getTex(), window, levels[level_counter].getSrcRect(), player_Walking_Backward, levels[level_counter], levels[level_counter].getModifier());
 
@@ -142,11 +149,12 @@ int main(int argc, char *args[])
     SDL_Texture *exclamationTex = window.loadTexture("src/res/gfx/!.png");
     SDL_Rect playerRect = {960, 540, 100, 100};
 
+    // Ustvarimo health text
     Text text1(window.getRenderer(), textColor, font, "Health: " + std::to_string(static_cast<int>(levels[level_counter].getPlayer().getHealth())), textWidth, 0, 150, 400);
 
-    // Initialize enemies array
     srand(time(NULL));
 
+    // Strutc za pozicijo nasprotnikov
     struct LastMove
     {
         bool Up = false;
@@ -155,17 +163,16 @@ int main(int argc, char *args[])
         bool Right = false;
     } lastMove;
 
-    // Add these variables at the beginning of your game loop
     int frameCount = 0;
     uint32_t fpsTimer = SDL_GetTicks();
 
     // GAME LOOP
     while (gameRunning)
     {
+        // FPS counter
         uint32_t currentFrameTime = SDL_GetTicks();
         frameCount++;
         bool moved = false;
-        // Calculate FPS every second
         if (currentFrameTime - fpsTimer >= 1000)
         {
             int fps = frameCount;
@@ -177,8 +184,10 @@ int main(int argc, char *args[])
         ticks = SDL_GetTicks();
         bool moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
         int tempCount = level_counter;
+        // Kličemo vse inputs
         bool input = inputHandling(event, gameRunning, levels[level_counter].getPlayer(), player_Walking_Forward, player_Walking_Backward, punch, window, moveUp, moveDown, moveLeft, moveRight, levels, level_counter, playerMovement);
 
+        // Preverimo če smo spremenili level s nalaganjem
         if (tempCount != level_counter)
             goto setup;
 
@@ -248,9 +257,15 @@ int main(int argc, char *args[])
             }
         }
         // END OF MOVEMENT ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        // Če ni bilo premika shranimo ' ', da se bo zaznalo na replay
         if (!moved)
             playerMovement.push_back(' ');
+
+        // Kličemo enemyAI
         enemyAI(levels[level_counter].getEnemies(), levels[level_counter].getEnemyNumber(), levels, level_counter, levels[level_counter].getModifier());
+
+        // Preverimo če smo zadeli healthPack
         if (ticks - healtime > 200)
         {
             heal = levels[level_counter].checkHeal(&playerRect);
@@ -259,7 +274,8 @@ int main(int argc, char *args[])
                 healtime = ticks;
             }
         }
-        // DAMAGE
+
+        // Preverimo če smo dobili damage od nasprotnika
         for (int i = 0; i < levels[level_counter].getEnemyNumber(); i++)
         {
             if (SDL_HasIntersection(&playerRect, levels[level_counter].useEnemy(i).getHitbox()))
@@ -275,9 +291,10 @@ int main(int argc, char *args[])
                 }
             }
 
-            // PUNCHING
+            // Preverimo če lahko/smo udarili nasprotnika
             if ((levels[level_counter].useEnemy(i).Circle(levels[level_counter].useEnemy(i).getX(), levels[level_counter].useEnemy(i).getY(), 200) && levels[level_counter].useEnemy(i).Alive() == true))
             {
+                // Če je nasprotnik dovolj blizu, prikažemo klicaj nad glavo
                 renderEx = true;
                 SDL_Rect exclamationRect = {playerRect.x + (playerRect.w / 2) - 50, playerRect.y - 100, 100, 100};
                 if (punch == true && ticks - lastPunchTime > 400)
@@ -290,7 +307,8 @@ int main(int argc, char *args[])
             }
         }
         punch = false;
-        // healthpack collision
+
+        // Preverimo če smo trčili s uganko
         if (checking)
         {
             checking = levels[level_counter].checkClues(&player);
@@ -302,6 +320,7 @@ int main(int argc, char *args[])
                 checking = true;
         }
 
+        // Preverimo če smo umrli
         if (levels[level_counter].getPlayer().Alive() == false || !levels[level_counter].checkDeathCollision(player.getHitbox()))
         {
             playerMovement.push_back('x');
@@ -346,6 +365,7 @@ int main(int argc, char *args[])
 
         window.renderTexture1(clueDist[levels[level_counter].clueDistance()], {1644, 819, 255, 240});
 
+        // Prikaz rdečega ob udarcu
         if (damageTime == true)
         {
 
@@ -359,6 +379,7 @@ int main(int argc, char *args[])
             }
         }
 
+        // Prikaz zelenega ob healanju
         if (heal == true)
         {
 
@@ -373,6 +394,9 @@ int main(int argc, char *args[])
         }
 
         window.display();
+
+        // Preverimo če smo uspešno končali level
+        // Če smo, gremo na nasljednjega, če smo pa zmagali celo igro pokažemo "Win menu"
         if (levels[level_counter].checkComplete())
         {
             if (SDL_HasIntersection(&levels[level_counter].getgateRect(), &playerRect))
@@ -429,6 +453,7 @@ int main(int argc, char *args[])
         }
     }
 
+// CleanUp
 Finish:
     SDL_DestroyTexture(player_Walking_Forward[0]);
     SDL_DestroyTexture(player_Walking_Forward[1]);

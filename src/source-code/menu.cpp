@@ -15,6 +15,7 @@
 #include "menu.hpp"
 #include "replay.hpp"
 
+// Main menu funkcija
 int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement)
 {
 
@@ -165,6 +166,7 @@ int menu(Render &window, Level levels[], int &levelNumber, vector<char> movement
     return levelNumber;
 }
 
+// Credits menu
 void credits(Render &window)
 {
 
@@ -210,6 +212,7 @@ void credits(Render &window)
     SDL_DestroyTexture(back.getTex2());
 }
 
+// options menu
 void options(Render &window)
 {
     bool options = true;
@@ -283,6 +286,7 @@ void options(Render &window)
     SDL_DestroyTexture(back.getTex2());
 }
 
+// Tutorial page
 void tutorial(Render &window)
 {
     window.clear();
@@ -366,6 +370,7 @@ void tutorial(Render &window)
     SDL_DestroyTexture(buttonTex);
 }
 
+// Prikaže se ob smrti/zmagi, omogoča ponovno igranje, shranjevanje, zapuščanje igre...
 int selectScreen(Render &window, bool win)
 {
     Button replayFromStart(150, 546, 410, 200, window.loadTexture("src/res/dev/replayStart.png"), window.loadTexture("src/res/dev/replayStart pressed.png"));
@@ -431,7 +436,7 @@ int selectScreen(Render &window, bool win)
 
     return 0;
 }
-
+// Prikaz menija za replay funkcijo (ni dejanski replay, to je v svoji datoteki!!)
 void Replay(Render &window, Level levels[], vector<char> movement)
 {
     Button replay1(158, 742, 372, 139, window.loadTexture("src/res/dev/replay.png"), window.loadTexture("src/res/dev/replayPressed.png"));

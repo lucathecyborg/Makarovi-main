@@ -6,6 +6,8 @@
 #include <fstream>
 
 #include "levels.hpp"
+
+// Shranjevanje premikov v tekstovno datoteko glede na level
 void saveReplay(Level &level, vector<char> movement)
 {
     string filename = std::to_string(static_cast<char>(level.getLevelNumber()));
@@ -18,6 +20,7 @@ void saveReplay(Level &level, vector<char> movement)
     data2.close();
 }
 
+// Igranje shranjenih premikov glede na level
 void playReplay(Level &level, vector<char> movement, Render &window)
 {
 
@@ -33,6 +36,7 @@ void playReplay(Level &level, vector<char> movement, Render &window)
         cout << filename << endl;
         return;
     }
+
     uint32_t startTicks = SDL_GetTicks();
     Text text1(window.getRenderer(), {0, 0, 0, 255}, TTF_OpenFont("src/res/dev/IBMPlexMono-Medium.ttf", 100), "Time: " + std::to_string(0), 100, 100, 100, 300, {255, 255, 255, 75});
 

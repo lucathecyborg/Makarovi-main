@@ -16,6 +16,7 @@ void Player::setTex(SDL_Texture *p_tex)
     player->setTex(p_tex);
 }
 
+// Funkcija za damage
 void Player::Damage(int damage)
 {
 
@@ -34,6 +35,7 @@ void Player::Damage(int damage)
     }
 }
 
+// preveri če je igralec živ/mrtev
 bool Player::Alive()
 {
     if (health <= 0)

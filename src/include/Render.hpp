@@ -51,7 +51,6 @@ public:
     Text(SDL_Renderer *renderer1, SDL_Color color1, TTF_Font *font1, string text1, int x1, int y1, int h1, int w1, SDL_Color color2);
     void renderText(int screenWidth, int screenHeight);
     void renderText1(int screenWidth, int screenHeight);
-    void clearText();
 };
 
-#endif // RENDER_
+#endif
