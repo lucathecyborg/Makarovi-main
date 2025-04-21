@@ -43,12 +43,12 @@ void playReplay(Level &level, vector<char> movement, Render &window)
     while (running)
     {
         uint32_t elapsedTicks = (SDL_GetTicks() - startTicks) / 1000;
-        // Process events to allow stopping the replay
+
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_KEYUP && (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_ESCAPE))
             {
-                running = false; // Stop replay on RETURN key
+                running = false;
                 break;
             }
         }
