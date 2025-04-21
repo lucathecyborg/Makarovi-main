@@ -7,3 +7,4 @@ save game--> saves current game
 load game--> loads saved game from file (will overwrite current game!!)
 save replay--> saves list of current moves for current level
 view replay--> can view saved game replays (replays are auto saved when you finish a level dw)
+clues --> keeps track of all your found clues per level, can also be accessed by holding tab
